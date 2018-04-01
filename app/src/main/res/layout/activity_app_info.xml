@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical">
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/app_info_package_name_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Package name:" />
+
+            <TextView
+                android:id="@+id/app_info_version_code_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version code:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_package_name_value" />
+
+            <TextView
+                android:id="@+id/app_info_version_name_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version name:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_version_code_value" />
+
+            <TextView
+                android:id="@+id/app_info_data_directory_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data directory:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_version_name_value" />
+
+            <TextView
+                android:id="@+id/app_info_source_directory_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Source directory:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_data_directory_value" />
+
+            <TextView
+                android:id="@+id/app_info_process_name_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Process name:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_source_directory_value" />
+
+            <TextView
+                android:id="@+id/app_info_shared_libraries_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shared libraries:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_process_name_value" />
+
+            <TextView
+                android:id="@+id/app_info_native_libraries_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Native libraries:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_shared_libraries_value" />
+
+            <TextView
+                android:id="@+id/app_info_target_sdk_version_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Target SDK version:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_native_libraries_value" />
+
+            <TextView
+                android:id="@+id/app_info_minimum_sdk_version_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minimum SDK version:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_target_sdk_version_value" />
+
+            <TextView
+                android:id="@+id/app_info_certificate_start_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Certificate start:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_minimum_sdk_version_value" />
+
+            <TextView
+                android:id="@+id/app_info_certificate_end_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Certificate end:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_certificate_start_value" />
+
+            <TextView
+                android:id="@+id/app_info_app_flags_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App flags:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_certificate_end_value" />
+
+            <TextView
+                android:id="@+id/app_info_signature_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Signature:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_app_flags_value" />
+
+            <TextView
+                android:id="@+id/app_info_permissions_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Permissions:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_signature_value" />
+
+            <TextView
+                android:id="@+id/app_info_permissions_not_granted_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not Granted Permissions:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_permissions_value" />
+
+            <TextView
+                android:id="@+id/app_info_features_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Required features:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_permissions_not_granted_value" />
+
+            <TextView
+                android:id="@+id/app_info_features_not_available_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Features not available in Device:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_features_value" />
+
+            <TextView
+                android:id="@+id/app_info_activities_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activities:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_features_not_available_value" />
+
+            <TextView
+                android:id="@+id/app_info_services_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Services:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_activities_value" />
+
+            <TextView
+                android:id="@+id/app_info_content_providers_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Content Providers:"
+                app:layout_constraintTop_toBottomOf="@+id/app_info_services_value" />
+
+            <!-- values from here -->
+            <TextView
+                android:id="@+id/app_info_package_name_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_package_name_header"
+                tools:text="com.android.chrome" />
+
+            <TextView
+                android:id="@+id/app_info_version_code_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_version_code_header"
+                tools:text="1 (0x1)" />
+
+            <TextView
+                android:id="@+id/app_info_version_name_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_version_name_header"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/app_info_data_directory_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_data_directory_header"
+                tools:text="/data/user/0/..." />
+
+            <TextView
+                android:id="@+id/app_info_source_directory_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_source_directory_header"
+                tools:text="/data/data/..." />
+
+            <TextView
+                android:id="@+id/app_info_process_name_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_process_name_header"
+                tools:text="com.android.chrome" />
+
+            <TextView
+                android:id="@+id/app_info_shared_libraries_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_shared_libraries_header"
+                tools:text="No shared libraries" />
+
+            <TextView
+                android:id="@+id/app_info_native_libraries_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_native_libraries_header"
+                tools:text="No native libraries" />
+
+            <TextView
+                android:id="@+id/app_info_target_sdk_version_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_target_sdk_version_header"
+                tools:text="26" />
+
+            <TextView
+                android:id="@+id/app_info_minimum_sdk_version_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_minimum_sdk_version_header"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/app_info_certificate_start_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_certificate_start_header"
+                tools:text="Mon Feb 28 ..." />
+
+            <TextView
+                android:id="@+id/app_info_certificate_end_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_certificate_end_header"
+                tools:text="Mon Feb 28 ..." />
+
+            <TextView
+                android:id="@+id/app_info_app_flags_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_app_flags_header"
+                tools:text="0x323232\nFLAG_HAS_CODE" />
+
+            <TextView
+                android:id="@+id/app_info_signature_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_signature_header"
+                tools:text="CN=someone\nC=somewhere" />
+
+            <TextView
+                android:id="@+id/app_info_permissions_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_permissions_header"
+                tools:text="android.permission.WAKE_LOCK\nandroid.permission.VIBRATE" />
+
+            <TextView
+                android:id="@+id/app_info_permissions_not_granted_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_permissions_not_granted_header"
+                tools:text="android.permission.WAKE_LOCK\nandroid.permission.VIBRATE" />
+
+            <TextView
+                android:id="@+id/app_info_features_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_features_header"
+                tools:text="android.hardware.fingerprint (requires=false)" />
+
+            <TextView
+                android:id="@+id/app_info_features_not_available_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_features_not_available_header"
+                tools:text="android.hardware.fingerprint (requires=false)" />
+
+            <TextView
+                android:id="@+id/app_info_activities_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_activities_header"
+                tools:text="MainActivity" />
+
+            <TextView
+                android:id="@+id/app_info_services_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_services_header"
+                tools:text="UpdateService" />
+
+            <TextView
+                android:id="@+id/app_info_content_providers_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/app_info_content_providers_header"
+                tools:text="MessageReceiver" />
+
+            <android.support.constraint.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                app:constraint_referenced_ids="app_info_features_not_available_header" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </HorizontalScrollView>
+
+</ScrollView>

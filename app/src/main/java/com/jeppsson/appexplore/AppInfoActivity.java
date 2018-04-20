@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -30,7 +31,7 @@ import com.jeppsson.appexplore.db.PackageDatabase;
 
 import java.io.File;
 
-public class AppInfoActivity extends AppCompatActivity {
+public class AppInfoActivity extends AppCompatActivity implements Observer<Package> {
 
     static final String PACKAGE_NAME = "jeppsson.extra.PACKAGE_NAME";
 
@@ -42,7 +43,7 @@ public class AppInfoActivity extends AppCompatActivity {
         String extraPackageName = getIntent().getStringExtra(PACKAGE_NAME);
 
         PackageViewModel model = ViewModelProviders.of(this, new PackageViewModel.PackageViewModelFactory(getApplication(), extraPackageName)).get(PackageViewModel.class);
-        model.getPackage().observe(this, this::updateAppInfo);
+        model.getPackage().observe(this, this);
     }
 
     @Override
@@ -68,7 +69,8 @@ public class AppInfoActivity extends AppCompatActivity {
         }
     }
 
-    private void updateAppInfo(Package p) {
+    @Override
+    public void onChanged(@Nullable Package p) {
         TextView packageName = findViewById(R.id.app_info_package_name_value);
         TextView versionCode = findViewById(R.id.app_info_version_code_value);
         TextView versionName = findViewById(R.id.app_info_version_name_value);

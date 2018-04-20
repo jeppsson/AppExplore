@@ -71,27 +71,27 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
 
     @Override
     public void onChanged(@Nullable Package p) {
-        TextView packageName = findViewById(R.id.app_info_package_name_value);
-        TextView versionCode = findViewById(R.id.app_info_version_code_value);
-        TextView versionName = findViewById(R.id.app_info_version_name_value);
-        TextView dataDir = findViewById(R.id.app_info_data_directory_value);
-        TextView sourceDir = findViewById(R.id.app_info_source_directory_value);
-        TextView processName = findViewById(R.id.app_info_process_name_value);
-        TextView targetSDKVersion = findViewById(R.id.app_info_target_sdk_version_value);
-        TextView minimumSDKVersion = findViewById(R.id.app_info_minimum_sdk_version_value);
-        TextView sharedLibraries = findViewById(R.id.app_info_shared_libraries_value);
-        TextView nativeLibraries = findViewById(R.id.app_info_native_libraries_value);
-        TextView certificateStart = findViewById(R.id.app_info_certificate_start_value);
-        TextView certificateEnd = findViewById(R.id.app_info_certificate_end_value);
-        TextView appFlags = findViewById(R.id.app_info_app_flags_value);
-        TextView signature = findViewById(R.id.app_info_signature_value);
-        TextView permissions = findViewById(R.id.app_info_permissions_value);
-        TextView permissionsNotGranted = findViewById(R.id.app_info_permissions_not_granted_value);
-        TextView features = findViewById(R.id.app_info_features_value);
-        TextView featuresNotAvailable = findViewById(R.id.app_info_features_not_available_value);
-        TextView activities = findViewById(R.id.app_info_activities_value);
-        TextView services = findViewById(R.id.app_info_services_value);
-        TextView contentProviders = findViewById(R.id.app_info_content_providers_value);
+        TextView packageName = findViewById(R.id.value_package_name);
+        TextView versionCode = findViewById(R.id.value_version_code);
+        TextView versionName = findViewById(R.id.value_version_name);
+        TextView dataDir = findViewById(R.id.value_data_directory);
+        TextView sourceDir = findViewById(R.id.value_source_directory);
+        TextView processName = findViewById(R.id.value_process_name);
+        TextView targetSDKVersion = findViewById(R.id.value_target_sdk_version);
+        TextView minimumSDKVersion = findViewById(R.id.value_minimum_sdk_version);
+        TextView sharedLibraries = findViewById(R.id.value_shared_libraries);
+        TextView nativeLibraries = findViewById(R.id.value_native_libraries);
+        TextView certificateStart = findViewById(R.id.value_certificate_start);
+        TextView certificateEnd = findViewById(R.id.value_certificate_end);
+        TextView appFlags = findViewById(R.id.value_app_flags);
+        TextView signature = findViewById(R.id.value_signature);
+        TextView permissions = findViewById(R.id.value_permissions);
+        TextView permissionsNotGranted = findViewById(R.id.value_permissions_not_granted);
+        TextView features = findViewById(R.id.value_features);
+        TextView featuresNotAvailable = findViewById(R.id.value_features_not_available);
+        TextView activities = findViewById(R.id.value_activities);
+        TextView services = findViewById(R.id.value_services);
+        TextView contentProviders = findViewById(R.id.value_content_providers);
 
         PackageInfo packageInfo;
         try {

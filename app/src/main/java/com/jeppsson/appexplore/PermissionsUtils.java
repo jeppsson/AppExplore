@@ -3,10 +3,17 @@ package com.jeppsson.appexplore;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class PermissionsUtils {
 
-    static String getPermissions(PackageManager packageManager, PackageInfo packageInfo) {
+    static Spannable getPermissions(PackageManager packageManager, PackageInfo packageInfo) {
         StringBuilder sb = new StringBuilder();
 
         // todo: Check packageInfo.permissions and packageInfo.requestedPermissionsFlags
@@ -29,7 +36,7 @@ class PermissionsUtils {
             }
         }
 
-        return sb.toString().trim();
+        return colorize(sb.toString().trim());
     }
 
     public static String getPermissionsNotGranted(PackageInfo packageInfo) {
@@ -95,5 +102,29 @@ class PermissionsUtils {
             protLevel += "|runtime";
         }
         return protLevel;
+    }
+
+    private static SpannableString colorize(String text) {
+        SpannableString content = new SpannableString(text);
+
+        Matcher m = Pattern.compile("\\b(?:dangerous)\\b").matcher(text);
+        while (m.find()) {
+            content.setSpan(new ForegroundColorSpan(Color.CYAN),
+                    m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        m = Pattern.compile("\\b(?:signature)\\b").matcher(text);
+        while (m.find()) {
+            content.setSpan(new ForegroundColorSpan(Color.YELLOW),
+                    m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        m = Pattern.compile("\\b(?:signatureOrSystem)\\b").matcher(text);
+        while (m.find()) {
+            content.setSpan(new ForegroundColorSpan(Color.RED),
+                    m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        return content;
     }
 }

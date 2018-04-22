@@ -92,13 +92,15 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         TextView activities = findViewById(R.id.value_activities);
         TextView services = findViewById(R.id.value_services);
         TextView contentProviders = findViewById(R.id.value_content_providers);
+        TextView receivers = findViewById(R.id.value_receivers);
 
         PackageInfo packageInfo;
         try {
             packageInfo = getPackageManager().getPackageInfo(p.packageName,
                     PackageManager.GET_SIGNATURES | PackageManager.GET_PERMISSIONS
                             | PackageManager.GET_CONFIGURATIONS | PackageManager.GET_ACTIVITIES
-                            | PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);
+                            | PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS
+                            | PackageManager.GET_RECEIVERS);
         } catch (PackageManager.NameNotFoundException e) {
             return;
         }
@@ -155,6 +157,7 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         activities.setText(AppComponentUtils.getActivities(packageInfo));
         services.setText(AppComponentUtils.getServices(packageInfo));
         contentProviders.setText(AppComponentUtils.getContentProviders(packageInfo));
+        receivers.setText(AppComponentUtils.getReceivers(packageInfo));
     }
 
     private static class PackageViewModel extends AndroidViewModel {

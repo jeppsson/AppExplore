@@ -161,6 +161,13 @@
                 android:text="Content Providers:"
                 app:layout_constraintTop_toBottomOf="@+id/value_services" />
 
+            <TextView
+                android:id="@+id/header_receivers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Broadcast Receivers:"
+                app:layout_constraintTop_toBottomOf="@+id/value_content_providers" />
+
             <!-- values from here -->
             <TextView
                 android:id="@+id/value_package_name"
@@ -328,6 +335,14 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/barrier"
                 app:layout_constraintTop_toTopOf="@+id/header_content_providers"
+                tools:text="MessageReceiver" />
+
+            <TextView
+                android:id="@+id/value_receivers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/header_receivers"
                 tools:text="MessageReceiver" />
 
             <android.support.constraint.Barrier

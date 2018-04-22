@@ -42,7 +42,21 @@ final class AppComponentUtils {
                 sb.append(providerInfo.name).append('\n');
             }
         } else {
-            sb.append("No services");
+            sb.append("No content providers");
+        }
+
+        return sb.toString().trim();
+    }
+
+    public static String getReceivers(PackageInfo packageInfo) {
+        StringBuilder sb = new StringBuilder();
+
+        if (packageInfo.receivers != null) {
+            for (ActivityInfo activityInfo : packageInfo.receivers) {
+                sb.append(activityInfo.name).append('\n');
+            }
+        } else {
+            sb.append("No receivers");
         }
 
         return sb.toString().trim();

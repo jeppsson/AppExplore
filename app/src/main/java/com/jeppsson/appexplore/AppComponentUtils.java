@@ -12,6 +12,9 @@ final class AppComponentUtils {
         if (packageInfo.activities != null) {
             for (ActivityInfo activityInfo : packageInfo.activities) {
                 sb.append(activityInfo.name).append('\n');
+                if (activityInfo.exported) {
+                    sb.append("Exported: true").append('\n');
+                }
             }
         } else {
             sb.append("No activities");
@@ -25,7 +28,8 @@ final class AppComponentUtils {
 
         if (packageInfo.services != null) {
             for (ServiceInfo serviceInfo : packageInfo.services) {
-                sb.append(serviceInfo.name).append('\n');
+                sb.append(serviceInfo.name).append('\n')
+                        .append("Exported: ").append(serviceInfo.exported).append('\n');
             }
         } else {
             sb.append("No services");
@@ -39,7 +43,8 @@ final class AppComponentUtils {
 
         if (packageInfo.providers != null) {
             for (ProviderInfo providerInfo : packageInfo.providers) {
-                sb.append(providerInfo.name).append('\n');
+                sb.append(providerInfo.name).append('\n')
+                        .append("Exported: ").append(providerInfo.exported).append('\n');
             }
         } else {
             sb.append("No content providers");
@@ -53,7 +58,8 @@ final class AppComponentUtils {
 
         if (packageInfo.receivers != null) {
             for (ActivityInfo activityInfo : packageInfo.receivers) {
-                sb.append(activityInfo.name).append('\n');
+                sb.append(activityInfo.name).append('\n')
+                        .append("Exported: ").append(activityInfo.exported).append('\n');
             }
         } else {
             sb.append("No receivers");

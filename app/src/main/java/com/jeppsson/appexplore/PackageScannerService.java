@@ -51,7 +51,7 @@ public class PackageScannerService extends JobIntentService {
                     }
 
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                            .setSmallIcon(R.drawable.ic_new_releases_white_24dp)
+                            .setSmallIcon(R.drawable.ic_apps_white_24dp)
                             .setContentTitle(existingPackage.appName + " updated")
                             .setContentText("targetSdkVersion " + existingPackage.targetSdkVersion + " > " + applicationInfo.targetSdkVersion)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);

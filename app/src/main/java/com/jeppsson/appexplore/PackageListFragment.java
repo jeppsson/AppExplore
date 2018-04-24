@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -22,48 +23,58 @@ import com.jeppsson.appexplore.db.PackageDatabase;
 
 import java.util.List;
 
-public class PackageListFragment extends Fragment {
+public class PackageListFragment extends Fragment
+        implements Observer<List<Package>>, PackageClickCallback {
 
     private FragmentPackageListBinding mBinding;
     private PackageAdapter mAdapter;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_package_list, container, false);
-
-        mAdapter = new PackageAdapter(mPackageClickCallback);
-
-        mBinding.packageList.setAdapter(mAdapter);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             Bundle savedInstanceState) {
+        mBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_package_list, container, false);
 
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mAdapter = new PackageAdapter(this);
+
+        mBinding.packageList.setAdapter(mAdapter);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        PackageListViewModel model = ViewModelProviders.of(this).get(PackageListViewModel.class);
-        model.getApps().observe(this, apps -> {
-            if (apps != null) {
-                mBinding.setIsLoading(false);
-                mAdapter.setPackageList(apps);
-            } else {
-                mBinding.setIsLoading(true);
-            }
-        });
+        PackageListViewModel model =
+                ViewModelProviders.of(this).get(PackageListViewModel.class);
+        model.getPackages().observe(this, this);
     }
 
-    private final PackageClickCallback mPackageClickCallback = new PackageClickCallback() {
-        @Override
-        public void onClick(String p) {
-            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                Intent intent = new Intent(getContext(), AppInfoActivity.class);
-                intent.putExtra(AppInfoActivity.PACKAGE_NAME, p);
-                startActivity(intent);
-            }
+    @Override
+    public void onChanged(@Nullable List<Package> packages) {
+        if (packages != null) {
+            mBinding.setIsLoading(false);
+            mAdapter.setPackageList(packages);
+        } else {
+            mBinding.setIsLoading(true);
         }
-    };
+    }
+
+    @Override
+    public void onClick(String p) {
+        if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+            Intent intent = new Intent(getContext(), AppInfoActivity.class)
+                    .putExtra(AppInfoActivity.PACKAGE_NAME, p);
+            startActivity(intent);
+        }
+    }
 
     public static class PackageListViewModel extends AndroidViewModel {
 
@@ -76,7 +87,7 @@ public class PackageListFragment extends Fragment {
             mPackages = dao.loadAllApps();
         }
 
-        LiveData<List<Package>> getApps() {
+        LiveData<List<Package>> getPackages() {
             return mPackages;
         }
     }

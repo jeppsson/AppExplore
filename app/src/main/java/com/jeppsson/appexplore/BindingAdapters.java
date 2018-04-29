@@ -15,14 +15,13 @@ public class BindingAdapters {
     @BindingAdapter("applicationIcon")
     public static void setApplicationIcon(ImageView view, String packageName) {
         PackageManager pm = view.getContext().getPackageManager();
-        Drawable icon = null;
+        Drawable icon;
         try {
             icon = pm.getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            return;
         }
-        if (icon != null) {
-            view.setImageDrawable(icon);
-        }
+
+        view.setImageDrawable(icon);
     }
 }

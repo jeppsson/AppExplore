@@ -2,15 +2,18 @@ package com.jeppsson.appexplore;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 import com.jeppsson.appexplore.db.Package;
 import com.jeppsson.appexplore.db.PackageDao;
@@ -38,26 +41,7 @@ public class PackageScannerService extends JobIntentService {
             Package existingPackage = dao.findApp(applicationInfo.packageName);
             if (existingPackage != null) {
                 if (existingPackage.targetSdkVersion != applicationInfo.targetSdkVersion) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        CharSequence name = getString(R.string.notification_channel_name);
-                        String description = getString(R.string.notification_channel_description);
-                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-                        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-                        channel.setDescription(description);
-                        // Register the channel with the system
-
-                        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-                        notificationManager.createNotificationChannel(channel);
-                    }
-
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                            .setSmallIcon(R.drawable.ic_apps_white_24dp)
-                            .setContentTitle(existingPackage.appName + " updated")
-                            .setContentText("targetSdkVersion " + existingPackage.targetSdkVersion + " > " + applicationInfo.targetSdkVersion)
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                    notificationManager.notify(applicationInfo.packageName, 0, mBuilder.build());
+                    createNotification(applicationInfo, existingPackage.targetSdkVersion);
                 }
             }
 
@@ -82,5 +66,43 @@ public class PackageScannerService extends JobIntentService {
                 dao.delete(p);
             }
         }
+    }
+
+    private void createNotification(ApplicationInfo applicationInfo, int oldTargetSdkVersion) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.notification_channel_name);
+            String description = getString(R.string.notification_channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
+        Uri uri = new Uri.Builder()
+                .scheme("package")
+                .opaquePart(applicationInfo.packageName)
+                .build();
+        Intent appInfoIntent = new Intent(this, AppInfoActivity.class)
+                .setData(uri);
+        PendingIntent pendingIntent =
+                TaskStackBuilder.create(this)
+                        .addNextIntentWithParentStack(appInfoIntent)
+                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_apps_white_24dp)
+                .setContentTitle(applicationInfo.name + " updated")
+                .setContentText("targetSdkVersion " + oldTargetSdkVersion + " > " + applicationInfo.targetSdkVersion)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(null, 0, mBuilder.build());
     }
 }

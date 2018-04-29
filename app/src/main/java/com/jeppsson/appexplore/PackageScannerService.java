@@ -74,5 +74,13 @@ public class PackageScannerService extends JobIntentService {
                 dao.insert(p);
             }
         }
+
+        for (Package p : dao.allApps()) {
+            try {
+                getPackageManager().getPackageInfo(p.packageName, 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                dao.delete(p);
+            }
+        }
     }
 }

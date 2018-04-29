@@ -33,17 +33,20 @@ import java.io.File;
 
 public class AppInfoActivity extends AppCompatActivity implements Observer<Package> {
 
-    static final String PACKAGE_NAME = "jeppsson.extra.PACKAGE_NAME";
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_info);
 
-        String extraPackageName = getIntent().getStringExtra(PACKAGE_NAME);
+        Uri data = getIntent().getData();
+        if (data == null) {
+            return;
+        }
 
-        PackageViewModel model = ViewModelProviders.of(this, new PackageViewModel.PackageViewModelFactory(getApplication(), extraPackageName)).get(PackageViewModel.class);
-        model.getPackage().observe(this, this);
+        ViewModelProviders.of(this,
+                new PackageViewModel.PackageViewModelFactory(getApplication(), data.getSchemeSpecificPart()))
+                .get(PackageViewModel.class)
+                .getPackage().observe(this, this);
     }
 
     @Override
@@ -57,11 +60,8 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_open_app_info:
-                Uri uri = new Uri.Builder()
-                        .scheme("package")
-                        .opaquePart(getIntent().getStringExtra(PACKAGE_NAME))
-                        .build();
-                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri));
+                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        getIntent().getData()));
                 return true;
 
             default:

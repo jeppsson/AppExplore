@@ -4,6 +4,8 @@ import android.content.pm.Signature;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -45,7 +47,7 @@ final class Utils {
     }
 
     static String getCertificateStart(Signature[] signatures, String defaultString) {
-        X509Certificate certificate = getCertificate(signatures);
+        X509Certificate certificate = getCertificate(signatures[0]);
         if (certificate != null) {
             return DATE_FORMAT.format(certificate.getNotBefore());
         } else {
@@ -54,7 +56,7 @@ final class Utils {
     }
 
     static String getCertificateEnd(Signature[] signatures, String defaultString) {
-        X509Certificate certificate = getCertificate(signatures);
+        X509Certificate certificate = getCertificate(signatures[0]);
         if (certificate != null) {
             return DATE_FORMAT.format(certificate.getNotAfter());
         } else {
@@ -62,31 +64,55 @@ final class Utils {
         }
     }
 
-    private static X509Certificate getCertificate(Signature[] signatures) {
-        for (Signature signature : signatures) {
-            /*
-             * Get the X.509 certificate.
-             */
-            byte[] rawCert = signature.toByteArray();
-            InputStream certStream = new ByteArrayInputStream(rawCert);
+    private static X509Certificate getCertificate(Signature signature) {
+        /*
+         * Get the X.509 certificate.
+         */
+        byte[] rawCert = signature.toByteArray();
+        InputStream certStream = new ByteArrayInputStream(rawCert);
 
-            try {
-                CertificateFactory certFactory = CertificateFactory.getInstance("X509");
-                return (X509Certificate) certFactory.generateCertificate(certStream);
-            } catch (CertificateException ignored) {
-            }
+        try {
+            CertificateFactory certFactory = CertificateFactory.getInstance("X509");
+            return (X509Certificate) certFactory.generateCertificate(certStream);
+        } catch (CertificateException ignored) {
         }
 
         return null;
     }
 
-    static String getSignature(Signature[] signatures, String defaultString) {
-        X509Certificate certificate = getCertificate(signatures);
+    static String getSignature(Signature[] signatures) {
+        StringBuilder sb = new StringBuilder();
+
+        Signature signature = signatures[0];
+
+        X509Certificate certificate = getCertificate(signature);
         if (certificate != null) {
             X500Principal principal = certificate.getIssuerX500Principal();
-            return principal.getName().replace(',', '\n');
-        } else {
-            return defaultString;
+            sb.append(principal.getName().replaceAll("(?<!\\\\),", "\n"))
+                    .append('\n');
         }
+
+        sb.append("Sha1Fingerprint=")
+                .append(computeFingerprint(signature.toByteArray(), "SHA1")).append('\n')
+                .append("Sha256Fingerprint=")
+                .append(computeFingerprint(signature.toByteArray(), "SHA256")).append('\n');
+
+        return sb.toString().trim();
+    }
+
+    private static String computeFingerprint(byte[] certRaw, String algorithm) {
+        StringBuilder strResult = new StringBuilder();
+
+        try {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            md.update(certRaw);
+            for (byte b : md.digest()) {
+                strResult.append(String.format("%02X:", b));
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+        }
+
+        return strResult.toString().replaceAll(":$", "");
     }
 }

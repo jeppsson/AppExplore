@@ -143,7 +143,7 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         appFlags.setText(getString(R.string.app_info_app_flags, applicationInfo.flags, AppFlagUtils.getReadableFlags(applicationInfo.flags)));
 
         // Signature
-        signature.setText(Utils.getSignature(packageInfo.signatures, "default"));
+        signature.setText(Utils.getSignature(packageInfo.signatures));
 
         // Permissions
         permissions.setText(PermissionsUtils.getPermissions(getPackageManager(), packageInfo));

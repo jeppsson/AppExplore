@@ -5,4 +5,6 @@
     <string name="notification_channel_description">Channel description</string>
     <string name="app_info_version_code">%1$d (0x%2$x)</string>
     <string name="app_info_app_flags">0x%1$x\n%2$s</string>
+
+    <string name="notification_update_targetSdkVersion">targetSdkVersion %1$d > %2$d</string>
 </resources>

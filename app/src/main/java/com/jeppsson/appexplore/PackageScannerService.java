@@ -40,8 +40,15 @@ public class PackageScannerService extends JobIntentService {
         for (ApplicationInfo applicationInfo : packages) {
             Package existingPackage = dao.findApp(applicationInfo.packageName);
             if (existingPackage != null) {
+                StringBuilder sb = new StringBuilder();
                 if (existingPackage.targetSdkVersion != applicationInfo.targetSdkVersion) {
-                    createNotification(applicationInfo, existingPackage.targetSdkVersion);
+                    sb.append(getString(R.string.notification_update_targetSdkVersion,
+                            existingPackage.targetSdkVersion, applicationInfo.targetSdkVersion))
+                            .append('\n');
+                }
+
+                if (sb.length() > 0) {
+                    createNotification(applicationInfo, sb.toString().trim());
                 }
             }
 
@@ -68,7 +75,7 @@ public class PackageScannerService extends JobIntentService {
         }
     }
 
-    private void createNotification(ApplicationInfo applicationInfo, int oldTargetSdkVersion) {
+    private void createNotification(ApplicationInfo applicationInfo, String contentText) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.notification_channel_name);
             String description = getString(R.string.notification_channel_description);
@@ -97,7 +104,7 @@ public class PackageScannerService extends JobIntentService {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_apps_white_24dp)
                 .setContentTitle(applicationInfo.name + " updated")
-                .setContentText("targetSdkVersion " + oldTargetSdkVersion + " > " + applicationInfo.targetSdkVersion)
+                .setContentText(contentText)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);

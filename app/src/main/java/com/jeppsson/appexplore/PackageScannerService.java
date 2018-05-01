@@ -103,6 +103,6 @@ public class PackageScannerService extends JobIntentService {
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(null, 0, mBuilder.build());
+        notificationManager.notify(applicationInfo.name, 0, mBuilder.build());
     }
 }

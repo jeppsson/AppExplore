@@ -47,6 +47,14 @@ public class PackageScannerService extends JobIntentService {
                             .append('\n');
                 }
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    if (existingPackage.minSdkVersion != applicationInfo.minSdkVersion) {
+                        sb.append(getString(R.string.notification_update_minimumSDKVersion,
+                                existingPackage.minSdkVersion, applicationInfo.minSdkVersion))
+                                .append('\n');
+                    }
+                }
+
                 if (sb.length() > 0) {
                     createNotification(applicationInfo, sb.toString().trim());
                 }

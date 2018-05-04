@@ -32,67 +32,104 @@ public class PackageScannerService extends JobIntentService {
         enqueueWork(context, PackageScannerService.class, JOB_ID, new Intent());
     }
 
+    static void enqueueWork(Context context, @NonNull Intent intent) {
+        enqueueWork(context, PackageScannerService.class, JOB_ID, intent);
+    }
+
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
+        String action = intent.getAction();
+
         PackageDao dao = PackageDatabase.getAppDatabase(this).dao();
-
         PackageManager pm = getPackageManager();
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-        for (ApplicationInfo applicationInfo : packages) {
-            Package existingPackage = dao.findApp(applicationInfo.packageName);
-
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            boolean notificationsEnabled =
-                    sharedPref.getBoolean(SettingsActivity.KEY_PREF_NOTIFICATIONS, true);
-
-            if (notificationsEnabled) {
-                if (existingPackage != null) {
-                    StringBuilder sb = new StringBuilder();
-                    if (existingPackage.targetSdkVersion != applicationInfo.targetSdkVersion) {
-                        sb.append(getString(R.string.notification_update_targetSdkVersion,
-                                existingPackage.targetSdkVersion, applicationInfo.targetSdkVersion))
-                                .append('\n');
-                    }
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        if (existingPackage.minSdkVersion != applicationInfo.minSdkVersion) {
-                            sb.append(getString(R.string.notification_update_minimumSDKVersion,
-                                    existingPackage.minSdkVersion, applicationInfo.minSdkVersion))
-                                    .append('\n');
-                        }
-                    }
-
-                    if (sb.length() > 0) {
-                        createNotification(applicationInfo, sb.toString().trim());
-                    }
+        if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
+            Uri data = intent.getData();
+            if (data != null) {
+                ApplicationInfo applicationInfo;
+                try {
+                    applicationInfo = pm.getApplicationInfo(
+                            data.getSchemeSpecificPart(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    return;
                 }
-            }
 
-            Package p = new Package();
-            p.appName = pm.getApplicationLabel(applicationInfo).toString();
-            p.packageName = applicationInfo.packageName;
-            p.targetSdkVersion = applicationInfo.targetSdkVersion;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                p.minSdkVersion = applicationInfo.minSdkVersion;
+                notifyUpdate(dao, pm, applicationInfo);
+                updatePackage(dao, pm, applicationInfo);
             }
-
-            int updates = dao.update(p);
-            if (updates == 0) {
-                dao.insert(p);
-            }
-        }
-
-        for (Package p : dao.allApps()) {
-            try {
-                getPackageManager().getPackageInfo(p.packageName, 0);
-            } catch (PackageManager.NameNotFoundException e) {
+        } else if (Intent.ACTION_PACKAGE_FULLY_REMOVED.equals(action)) {
+            Uri data = intent.getData();
+            if (data != null) {
+                Package p = new Package();
+                p.packageName = data.getSchemeSpecificPart();
                 dao.delete(p);
+            }
+        } else {
+            List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+            for (ApplicationInfo applicationInfo : packages) {
+                notifyUpdate(dao, pm, applicationInfo);
+                updatePackage(dao, pm, applicationInfo);
+            }
+
+            for (Package p : dao.allApps()) {
+                try {
+                    getPackageManager().getPackageInfo(p.packageName, 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    dao.delete(p);
+                }
             }
         }
     }
 
-    private void createNotification(ApplicationInfo applicationInfo, String contentText) {
+    private void notifyUpdate(PackageDao dao, PackageManager pm, ApplicationInfo applicationInfo) {
+        Package existingPackage = dao.findApp(applicationInfo.packageName);
+
+        if (existingPackage != null) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean notificationsEnabled =
+                    sharedPref.getBoolean(SettingsActivity.KEY_PREF_NOTIFICATIONS, true);
+            if (!notificationsEnabled) {
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            if (existingPackage.targetSdkVersion != applicationInfo.targetSdkVersion) {
+                sb.append(getString(R.string.notification_update_targetSdkVersion,
+                        existingPackage.targetSdkVersion, applicationInfo.targetSdkVersion))
+                        .append('\n');
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (existingPackage.minSdkVersion != applicationInfo.minSdkVersion) {
+                    sb.append(getString(R.string.notification_update_minimumSDKVersion,
+                            existingPackage.minSdkVersion, applicationInfo.minSdkVersion))
+                            .append('\n');
+                }
+            }
+
+            if (sb.length() > 0) {
+                createNotification(pm, applicationInfo, sb.toString().trim());
+            }
+        }
+    }
+
+    private void updatePackage(PackageDao dao, PackageManager pm, ApplicationInfo applicationInfo) {
+        Package p = new Package();
+        p.appName = pm.getApplicationLabel(applicationInfo).toString();
+        p.packageName = applicationInfo.packageName;
+        p.targetSdkVersion = applicationInfo.targetSdkVersion;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            p.minSdkVersion = applicationInfo.minSdkVersion;
+        }
+
+        int updates = dao.update(p);
+        if (updates == 0) {
+            dao.insert(p);
+        }
+    }
+
+    private void createNotification(PackageManager pm, ApplicationInfo applicationInfo, String contentText) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.notification_channel_name);
             String description = getString(R.string.notification_channel_description);
@@ -120,7 +157,7 @@ public class PackageScannerService extends JobIntentService {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_apps_white_24dp)
-                .setContentTitle(applicationInfo.name + " updated")
+                .setContentTitle(pm.getApplicationLabel(applicationInfo) + " updated")
                 .setContentText(contentText)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)

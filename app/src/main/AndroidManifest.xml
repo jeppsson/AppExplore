@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jeppsson.appexplore">
 
+    <!-- Needed by JobScheduler to persist this job across device reboots -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Needed by JobIntentService for SDK<26 -->
     <uses-permission
         android:name="android.permission.WAKE_LOCK"
@@ -35,6 +37,9 @@
 
         <service
             android:name=".PackageScannerService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".PeriodicJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver android:name=".UpdateReceiver">

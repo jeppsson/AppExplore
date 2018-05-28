@@ -1,7 +1,5 @@
 package com.jeppsson.appexplore;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +22,6 @@ import java.util.List;
 public class PackageScannerService extends JobIntentService {
 
     private static final int JOB_ID = 1000;
-    private static final String CHANNEL_ID = "1";
 
     static void enqueueWork(Context context) {
         enqueueWork(context, PackageScannerService.class, JOB_ID, new Intent());
@@ -121,19 +118,6 @@ public class PackageScannerService extends JobIntentService {
     }
 
     private void createNotification(PackageManager pm, ApplicationInfo applicationInfo, String contentText) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.notification_channel_name);
-            String description = getString(R.string.notification_channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
 
         Uri uri = new Uri.Builder()
                 .scheme("package")
@@ -146,13 +130,14 @@ public class PackageScannerService extends JobIntentService {
                         .addNextIntentWithParentStack(appInfoIntent)
                         .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_apps_white_24dp)
-                .setContentTitle(pm.getApplicationLabel(applicationInfo) + " updated")
-                .setContentText(contentText)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_apps_white_24dp)
+                        .setContentTitle(pm.getApplicationLabel(applicationInfo) + " updated")
+                        .setContentText(contentText)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(applicationInfo.name, 0, mBuilder.build());

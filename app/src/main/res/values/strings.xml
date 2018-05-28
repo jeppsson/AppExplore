@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">AppExplore</string>
 
-    <string name="title_settings">Settings</string>
-
-    <string name="menu_item_settings">Settings</string>
-
-    <string name="settings_category_title_notifications">Notifications</string>
-    <string name="settings_notifications">Notify app updates</string>
-
     <string name="notification_channel_name">Channel name</string>
     <string name="notification_channel_description">Channel description</string>
     <string name="app_info_version_code">%1$d (0x%2$x)</string>

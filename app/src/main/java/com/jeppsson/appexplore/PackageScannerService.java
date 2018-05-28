@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,7 +14,6 @@ import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.preference.PreferenceManager;
 
 import com.jeppsson.appexplore.db.Package;
 import com.jeppsson.appexplore.db.PackageDao;
@@ -86,13 +84,6 @@ public class PackageScannerService extends JobIntentService {
         Package existingPackage = dao.findApp(applicationInfo.packageName);
 
         if (existingPackage != null) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            boolean notificationsEnabled =
-                    sharedPref.getBoolean(SettingsActivity.KEY_PREF_NOTIFICATIONS, true);
-            if (!notificationsEnabled) {
-                return;
-            }
-
             StringBuilder sb = new StringBuilder();
             if (existingPackage.targetSdkVersion != applicationInfo.targetSdkVersion) {
                 sb.append(getString(R.string.notification_update_targetSdkVersion,

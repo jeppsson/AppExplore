@@ -2,8 +2,4 @@
 
     <style name="AppTheme" parent="Theme.AppCompat" />
 
-    <style name="AppTheme.Settings">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-    </style>
-
 </resources>

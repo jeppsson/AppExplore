@@ -84,15 +84,13 @@ public class PackageScannerService extends JobIntentService {
             StringBuilder sb = new StringBuilder();
             if (existingPackage.targetSdkVersion != applicationInfo.targetSdkVersion) {
                 sb.append(getString(R.string.notification_update_targetSdkVersion,
-                        existingPackage.targetSdkVersion, applicationInfo.targetSdkVersion))
-                        .append('\n');
+                        existingPackage.targetSdkVersion, applicationInfo.targetSdkVersion));
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (existingPackage.minSdkVersion != applicationInfo.minSdkVersion) {
                     sb.append(getString(R.string.notification_update_minimumSDKVersion,
-                            existingPackage.minSdkVersion, applicationInfo.minSdkVersion))
-                            .append('\n');
+                            existingPackage.minSdkVersion, applicationInfo.minSdkVersion));
                 }
             }
 
@@ -133,7 +131,8 @@ public class PackageScannerService extends JobIntentService {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_apps_white_24dp)
-                        .setContentTitle(pm.getApplicationLabel(applicationInfo) + " updated")
+                        .setContentTitle(getString(R.string.notification_title,
+                                pm.getApplicationLabel(applicationInfo)))
                         .setContentText(contentText)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)

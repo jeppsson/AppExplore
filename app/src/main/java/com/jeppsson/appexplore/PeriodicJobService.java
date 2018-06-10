@@ -12,10 +12,11 @@ import android.support.annotation.RequiresApi;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class PeriodicJobService extends JobService {
 
+    private static final int JOB_ID_PERIODIC = 1000;
     private static final long PERIOD = 2 * 24 * 60 * 60 * 1000;
 
     static void enqueueWork(Context context) {
-        JobInfo.Builder builder = new JobInfo.Builder(1000,
+        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_PERIODIC,
                 new ComponentName(context, PeriodicJobService.class));
         builder.setRequiresCharging(true)
                 .setPersisted(true)

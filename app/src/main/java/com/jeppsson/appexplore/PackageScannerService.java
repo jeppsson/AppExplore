@@ -21,7 +21,7 @@ import java.util.List;
 
 public class PackageScannerService extends JobIntentService {
 
-    private static final int JOB_ID = 1000;
+    private static final int JOB_ID = 1001;
 
     static void enqueueWork(Context context) {
         enqueueWork(context, PackageScannerService.class, JOB_ID, new Intent());

@@ -83,19 +83,21 @@ final class Utils {
     static String getSignature(Signature[] signatures) {
         StringBuilder sb = new StringBuilder();
 
-        Signature signature = signatures[0];
+        for (Signature signature : signatures) {
+            X509Certificate certificate = getCertificate(signature);
+            if (certificate != null) {
+                X500Principal principal = certificate.getIssuerX500Principal();
+                sb.append(principal.getName().replaceAll("(?<!\\\\),", "\n"))
+                        .append('\n');
+            }
 
-        X509Certificate certificate = getCertificate(signature);
-        if (certificate != null) {
-            X500Principal principal = certificate.getIssuerX500Principal();
-            sb.append(principal.getName().replaceAll("(?<!\\\\),", "\n"))
+            sb.append("Sha1Fingerprint=")
+                    .append(computeFingerprint(signature.toByteArray(), "SHA1"))
+                    .append('\n')
+                    .append("Sha256Fingerprint=")
+                    .append(computeFingerprint(signature.toByteArray(), "SHA256"))
                     .append('\n');
         }
-
-        sb.append("Sha1Fingerprint=")
-                .append(computeFingerprint(signature.toByteArray(), "SHA1")).append('\n')
-                .append("Sha256Fingerprint=")
-                .append(computeFingerprint(signature.toByteArray(), "SHA256")).append('\n');
 
         return sb.toString().trim();
     }

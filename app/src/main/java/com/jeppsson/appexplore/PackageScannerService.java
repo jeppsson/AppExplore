@@ -116,7 +116,6 @@ public class PackageScannerService extends JobIntentService {
     }
 
     private void createNotification(PackageManager pm, ApplicationInfo applicationInfo, String contentText) {
-
         Uri uri = new Uri.Builder()
                 .scheme("package")
                 .opaquePart(applicationInfo.packageName)

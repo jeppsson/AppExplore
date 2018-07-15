@@ -94,6 +94,12 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         TextView contentProviders = findViewById(R.id.value_content_providers);
         TextView receivers = findViewById(R.id.value_receivers);
 
+        if (p == null) {
+            // Could happen if app has been uninstalled
+            finish();
+            return;
+        }
+
         PackageInfo packageInfo;
         try {
             packageInfo = getPackageManager().getPackageInfo(p.packageName,
@@ -102,6 +108,7 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
                             | PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS
                             | PackageManager.GET_RECEIVERS);
         } catch (PackageManager.NameNotFoundException e) {
+            finish();
             return;
         }
 
@@ -109,6 +116,7 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         try {
             applicationInfo = getPackageManager().getApplicationInfo(p.packageName, PackageManager.GET_SHARED_LIBRARY_FILES);
         } catch (PackageManager.NameNotFoundException e) {
+            finish();
             return;
         }
 

@@ -134,8 +134,12 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         processName.setText(applicationInfo.processName);
 
         // Libraries
-        sharedLibraries.setText(Utils.arrayToLines(applicationInfo.sharedLibraryFiles, "No shared libraries"));
-        nativeLibraries.setText(Utils.arrayToLines(new File(applicationInfo.nativeLibraryDir).list(), applicationInfo.nativeLibraryDir, "No native libraries"));
+        if (applicationInfo.sharedLibraryFiles != null) {
+            sharedLibraries.setText(Utils.arrayToLines(applicationInfo.sharedLibraryFiles, "No shared libraries"));
+        }
+        if (applicationInfo.nativeLibraryDir != null) {
+            nativeLibraries.setText(Utils.arrayToLines(new File(applicationInfo.nativeLibraryDir).list(), applicationInfo.nativeLibraryDir, "No native libraries"));
+        }
 
         // SDK versions
         targetSDKVersion.setText(String.valueOf(applicationInfo.targetSdkVersion));

@@ -6,6 +6,12 @@ import android.content.pm.ProviderInfo;
 import android.content.pm.ServiceInfo;
 
 final class AppComponentUtils {
+
+    private static final int LAUNCH_MULTIPLE = 0;
+    private static final int LAUNCH_SINGLE_TOP = 1;
+    private static final int LAUNCH_SINGLE_TASK = 2;
+    private static final int LAUNCH_SINGLE_INSTANCE = 3;
+
     public static String getActivities(PackageInfo packageInfo) {
         StringBuilder sb = new StringBuilder();
 
@@ -14,6 +20,11 @@ final class AppComponentUtils {
                 sb.append(activityInfo.name).append('\n');
                 if (activityInfo.exported) {
                     sb.append("Exported: true").append('\n');
+                }
+                if (activityInfo.launchMode != 0) {
+                    sb.append("LaunchMode: ")
+                            .append(launchMode(activityInfo.launchMode))
+                            .append('\n');
                 }
             }
         } else {
@@ -66,5 +77,25 @@ final class AppComponentUtils {
         }
 
         return sb.toString().trim();
+    }
+
+
+    private static String launchMode(int launchMode) {
+        switch (launchMode) {
+            case LAUNCH_MULTIPLE:
+                return "standard";
+
+            case LAUNCH_SINGLE_TOP:
+                return "singleTop";
+
+            case LAUNCH_SINGLE_TASK:
+                return "singleTask";
+
+            case LAUNCH_SINGLE_INSTANCE:
+                return "singleInstance";
+
+            default:
+                return "unknown";
+        }
     }
 }

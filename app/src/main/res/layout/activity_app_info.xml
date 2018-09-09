@@ -85,11 +85,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/value_target_sdk_version" />
 
             <TextView
+                android:id="@+id/header_meta_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meta data:"
+                app:layout_constraintTop_toBottomOf="@+id/header_minimum_sdk_version" />
+
+            <TextView
                 android:id="@+id/header_certificate_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Certificate start:"
-                app:layout_constraintTop_toBottomOf="@+id/value_minimum_sdk_version" />
+                app:layout_constraintTop_toBottomOf="@+id/value_meta_data" />
 
             <TextView
                 android:id="@+id/header_certificate_end"
@@ -248,6 +255,14 @@
                 app:layout_constraintStart_toEndOf="@+id/barrier"
                 app:layout_constraintTop_toTopOf="@+id/header_minimum_sdk_version"
                 tools:text="1" />
+
+            <TextView
+                android:id="@+id/value_meta_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/barrier"
+                app:layout_constraintTop_toTopOf="@+id/header_meta_data"
+                tools:text="com.google.android.gms.version: 9452000" />
 
             <TextView
                 android:id="@+id/value_certificate_start"

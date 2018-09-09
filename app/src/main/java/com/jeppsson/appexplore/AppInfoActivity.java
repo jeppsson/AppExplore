@@ -79,6 +79,7 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         TextView processName = findViewById(R.id.value_process_name);
         TextView targetSDKVersion = findViewById(R.id.value_target_sdk_version);
         TextView minimumSDKVersion = findViewById(R.id.value_minimum_sdk_version);
+        TextView metaData = findViewById(R.id.value_meta_data);
         TextView sharedLibraries = findViewById(R.id.value_shared_libraries);
         TextView nativeLibraries = findViewById(R.id.value_native_libraries);
         TextView certificateStart = findViewById(R.id.value_certificate_start);
@@ -114,7 +115,8 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
 
         ApplicationInfo applicationInfo;
         try {
-            applicationInfo = getPackageManager().getApplicationInfo(p.packageName, PackageManager.GET_SHARED_LIBRARY_FILES);
+            applicationInfo = getPackageManager().getApplicationInfo(p.packageName,
+                    PackageManager.GET_SHARED_LIBRARY_FILES | PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             finish();
             return;
@@ -146,6 +148,9 @@ public class AppInfoActivity extends AppCompatActivity implements Observer<Packa
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             minimumSDKVersion.setText(String.valueOf(applicationInfo.minSdkVersion));
         }
+
+        // Meta data
+        metaData.setText(Utils.metaData(applicationInfo));
 
         // Certificate
         certificateStart.setText(Utils.getCertificateStart(packageInfo.signatures, "No certificate!"));

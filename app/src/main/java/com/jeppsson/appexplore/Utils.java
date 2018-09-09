@@ -1,6 +1,9 @@
 package com.jeppsson.appexplore;
 
+import android.content.pm.ApplicationInfo;
 import android.content.pm.Signature;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -116,5 +119,21 @@ final class Utils {
         }
 
         return strResult.toString().replaceAll(":$", "");
+    }
+
+    static String metaData(@NonNull ApplicationInfo applicationInfo) {
+        Bundle metaData = applicationInfo.metaData;
+        if (metaData != null) {
+            StringBuilder sb = new StringBuilder();
+            for (String metaDataName : metaData.keySet()) {
+                sb.append(metaDataName)
+                        .append(": ")
+                        .append(metaData.get(metaDataName))
+                        .append('\n');
+            }
+            return sb.toString();
+        }
+
+        return null;
     }
 }

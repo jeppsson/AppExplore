@@ -1,7 +1,7 @@
 package com.jeppsson.appexplore;
 
 import android.content.pm.PackageManager;
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;

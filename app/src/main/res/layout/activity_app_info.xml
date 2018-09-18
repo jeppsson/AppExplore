@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:scrollbars="none">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -360,14 +360,14 @@
                 app:layout_constraintTop_toTopOf="@+id/header_receivers"
                 tools:text="MessageReceiver" />
 
-            <android.support.constraint.Barrier
+            <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="end"
                 app:constraint_referenced_ids="header_features_not_available" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </HorizontalScrollView>
 

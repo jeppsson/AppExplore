@@ -14,7 +14,7 @@
 
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,6 +59,6 @@
             app:layout_constraintStart_toStartOf="@+id/txt_app_name"
             tools:text="package name" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

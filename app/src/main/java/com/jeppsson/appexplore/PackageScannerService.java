@@ -7,11 +7,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.TaskStackBuilder;
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
 
 import com.jeppsson.appexplore.db.Package;
 import com.jeppsson.appexplore.db.PackageDao;

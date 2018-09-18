@@ -4,7 +4,7 @@ import android.content.pm.FeatureInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 class FeaturesUtils {
     static String getFeatures(PackageInfo packageInfo) {

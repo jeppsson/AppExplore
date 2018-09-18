@@ -3,7 +3,7 @@ package com.jeppsson.appexplore;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.Signature;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

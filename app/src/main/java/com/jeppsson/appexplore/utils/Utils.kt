@@ -37,7 +37,7 @@ internal object Utils {
                         .append(metaData.get(metaDataName))
                         .append('\n')
             }
-            return sb.toString()
+            return sb.toString().trim()
         }
 
         return null

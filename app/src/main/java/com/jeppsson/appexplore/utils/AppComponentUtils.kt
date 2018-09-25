@@ -28,7 +28,7 @@ internal object AppComponentUtils {
             sb.append("No activities")
         }
 
-        return sb.toString().trim { it <= ' ' }
+        return sb.toString().trim()
     }
 
     fun getServices(packageInfo: PackageInfo): String {
@@ -37,13 +37,15 @@ internal object AppComponentUtils {
         if (packageInfo.services != null) {
             for (serviceInfo in packageInfo.services) {
                 sb.append(serviceInfo.name).append('\n')
-                        .append("Exported: ").append(serviceInfo.exported).append('\n')
+                if (serviceInfo.exported) {
+                    sb.append("Exported: true").append('\n')
+                }
             }
         } else {
             sb.append("No services")
         }
 
-        return sb.toString().trim { it <= ' ' }
+        return sb.toString().trim()
     }
 
     fun getContentProviders(packageInfo: PackageInfo): String {
@@ -52,13 +54,15 @@ internal object AppComponentUtils {
         if (packageInfo.providers != null) {
             for (providerInfo in packageInfo.providers) {
                 sb.append(providerInfo.name).append('\n')
-                        .append("Exported: ").append(providerInfo.exported).append('\n')
+                if (providerInfo.exported) {
+                    sb.append("Exported: true").append('\n')
+                }
             }
         } else {
             sb.append("No content providers")
         }
 
-        return sb.toString().trim { it <= ' ' }
+        return sb.toString().trim()
     }
 
     fun getReceivers(packageInfo: PackageInfo): String {
@@ -67,13 +71,15 @@ internal object AppComponentUtils {
         if (packageInfo.receivers != null) {
             for (activityInfo in packageInfo.receivers) {
                 sb.append(activityInfo.name).append('\n')
-                        .append("Exported: ").append(activityInfo.exported).append('\n')
+                if (activityInfo.exported) {
+                    sb.append("Exported: ").append('\n')
+                }
             }
         } else {
             sb.append("No receivers")
         }
 
-        return sb.toString().trim { it <= ' ' }
+        return sb.toString().trim()
     }
 
 

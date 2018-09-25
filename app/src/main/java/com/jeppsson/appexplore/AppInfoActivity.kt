@@ -118,10 +118,11 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
 
         // Libraries
         if (applicationInfo.sharedLibraryFiles != null) {
-            sharedLibraries.text = Utils.arrayToLines(applicationInfo.sharedLibraryFiles, "No shared libraries")
+            sharedLibraries.text = Utils.arrayToLines(applicationInfo.sharedLibraryFiles)
         }
         if (applicationInfo.nativeLibraryDir != null) {
-            nativeLibraries.text = Utils.arrayToLines(File(applicationInfo.nativeLibraryDir).list(), applicationInfo.nativeLibraryDir, "No native libraries")
+            nativeLibraries.text = Utils.arrayToLines(File(applicationInfo.nativeLibraryDir).list(),
+                    applicationInfo.nativeLibraryDir)
         }
 
         // SDK versions
@@ -134,11 +135,12 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
         metaData.text = Utils.metaData(applicationInfo)
 
         // Certificate
-        certificateStart.text = CertUtils.getCertificateStart(packageInfo.signatures, "No certificate!")
-        certificateEnd.text = CertUtils.getCertificateEnd(packageInfo.signatures, "No certificate!")
+        certificateStart.text = CertUtils.getCertificateStart(packageInfo.signatures)
+        certificateEnd.text = CertUtils.getCertificateEnd(packageInfo.signatures)
 
         // App flags
-        appFlags.text = getString(R.string.app_info_app_flags, applicationInfo.flags, AppFlagUtils.getReadableFlags(applicationInfo.flags))
+        appFlags.text = getString(R.string.app_info_app_flags, applicationInfo.flags,
+                AppFlagUtils.getReadableFlags(applicationInfo.flags))
 
         // Signature
         signature.text = CertUtils.getSignature(packageInfo.signatures)

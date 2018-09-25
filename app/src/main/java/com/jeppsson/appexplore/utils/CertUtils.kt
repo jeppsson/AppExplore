@@ -13,21 +13,21 @@ internal object CertUtils {
 
     private val DATE_FORMAT = SimpleDateFormat.getDateTimeInstance()
 
-    fun getCertificateStart(signatures: Array<Signature>, defaultString: String): String {
+    fun getCertificateStart(signatures: Array<Signature>): String {
         val certificate = getCertificate(signatures[0])
         return if (certificate != null) {
             DATE_FORMAT.format(certificate.notBefore)
         } else {
-            defaultString
+            ""
         }
     }
 
-    fun getCertificateEnd(signatures: Array<Signature>, defaultString: String): String {
+    fun getCertificateEnd(signatures: Array<Signature>): String {
         val certificate = getCertificate(signatures[0])
         return if (certificate != null) {
             DATE_FORMAT.format(certificate.notAfter)
         } else {
-            defaultString
+            ""
         }
     }
 

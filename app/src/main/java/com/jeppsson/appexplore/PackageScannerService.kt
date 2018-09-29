@@ -54,13 +54,13 @@ class PackageScannerService : JobIntentService() {
                 updatePackage(dao, pm, applicationInfo)
             }
 
+            // Remove uninstalled applications from data base
             for (p in dao.allApps()) {
                 try {
                     packageManager.getPackageInfo(p.packageName, 0)
                 } catch (e: PackageManager.NameNotFoundException) {
                     dao.delete(p)
                 }
-
             }
         }
     }
@@ -83,7 +83,7 @@ class PackageScannerService : JobIntentService() {
             }
 
             if (sb.isNotEmpty()) {
-                createNotification(pm, applicationInfo, sb.toString().trim { it <= ' ' })
+                createNotification(pm, applicationInfo, sb.toString().trim())
             }
         }
     }
@@ -114,22 +114,23 @@ class PackageScannerService : JobIntentService() {
                 .addNextIntentWithParentStack(appInfoIntent)
                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val mBuilder = NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_apps_white_24dp)
-                .setContentTitle(getString(R.string.notification_title,
-                        pm.getApplicationLabel(applicationInfo)))
-                .setContentText(contentText)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
+        val notificationBuilder =
+                NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_apps_white_24dp)
+                        .setContentTitle(getString(R.string.notification_title,
+                                pm.getApplicationLabel(applicationInfo)))
+                        .setContentText(contentText)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
 
         val notificationManager = NotificationManagerCompat.from(this)
-        notificationManager.notify(applicationInfo.name, 0, mBuilder.build())
+        notificationManager.notify(applicationInfo.name, 0, notificationBuilder.build())
     }
 
     companion object {
 
-        private val JOB_ID = 1001
+        private const val JOB_ID = 1001
 
         internal fun enqueueWork(context: Context) {
             JobIntentService.enqueueWork(context, PackageScannerService::class.java, JOB_ID, Intent())

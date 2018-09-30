@@ -7,8 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -34,7 +32,7 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
         return binding.root
     }
 
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = PackageAdapter(this)
@@ -42,11 +40,11 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
         binding.packageList.adapter = adapter
     }
 
-    override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val model = ViewModelProviders.of(this).get(PackageListViewModel::class.java)
-        model.packages.observe(this, this)
+        ViewModelProviders.of(this).get(PackageListViewModel::class.java)
+                .packages.observe(this, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -59,26 +57,17 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
         return when (item.itemId) {
             R.id.menu_action_app_notification_settings -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val context = context
-                    if (context != null) {
-                        startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                                .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
-                    }
+                    startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                            .putExtra(Settings.EXTRA_APP_PACKAGE, context?.packageName))
                 }
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onChanged(@Nullable packages: List<Package>?) {
-        if (packages != null) {
-            binding.isLoading = false
-            adapter.setPackageList(packages)
-        } else {
-            binding.isLoading = true
-        }
+    override fun onChanged(packages: List<Package>) {
+        adapter.setPackageList(packages)
     }
 
     override fun onClick(p: String) {

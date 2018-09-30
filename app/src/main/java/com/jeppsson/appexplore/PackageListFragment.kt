@@ -92,13 +92,9 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
         }
     }
 
-    class PackageListViewModel(@NonNull application: Application) : AndroidViewModel(application) {
+    class PackageListViewModel(application: Application) : AndroidViewModel(application) {
 
-        internal val packages: LiveData<List<Package>>
-
-        init {
-            val dao = PackageDatabase.getAppDatabase(getApplication()).dao()
-            packages = dao.loadAllApps()
-        }
+        internal val packages: LiveData<List<Package>> =
+                PackageDatabase.getAppDatabase(getApplication()).dao().loadAllApps()
     }
 }

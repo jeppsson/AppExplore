@@ -31,7 +31,7 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
         ViewModelProviders.of(this,
                 PackageViewModel.PackageViewModelFactory(application, data.schemeSpecificPart))
                 .get(PackageViewModel::class.java)
-                .`package`.observe(this, this)
+                .packageInfo.observe(this, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -160,25 +160,16 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
         receivers.text = AppComponentUtils.getReceivers(packageInfo)
     }
 
-    private class PackageViewModel internal constructor(@NonNull application: Application, p: String) : AndroidViewModel(application) {
+    private class PackageViewModel internal constructor(application: Application, packageName: String) : AndroidViewModel(application) {
 
-        private val _package = MediatorLiveData<Package>()
+        internal val packageInfo: LiveData<Package> =
+                PackageDatabase.getAppDatabase(getApplication()).dao().findAppLive(packageName)
 
-        internal val `package`: LiveData<Package>
-            get() = _package
-
-        init {
-
-            val dao = PackageDatabase.getAppDatabase(getApplication()).dao()
-
-            _package.addSource(dao.findAppLive(p)) { _package.setValue(it) }
-        }
-
-        class PackageViewModelFactory internal constructor(private val mApplication: Application, private val mPackage: String) : ViewModelProvider.NewInstanceFactory() {
+        class PackageViewModelFactory internal constructor(private val application: Application, private val packageName: String) : ViewModelProvider.NewInstanceFactory() {
 
             @NonNull
             override fun <T : ViewModel> create(@NonNull modelClass: Class<T>): T {
-                return PackageViewModel(mApplication, mPackage) as T
+                return PackageViewModel(application, packageName) as T
             }
         }
     }

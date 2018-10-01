@@ -7,16 +7,14 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import com.jeppsson.appexplore.databinding.FragmentPackageListBinding
+import androidx.recyclerview.widget.RecyclerView
 import com.jeppsson.appexplore.db.Package
 import com.jeppsson.appexplore.db.PackageDatabase
 
 class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCallback {
 
-    private lateinit var binding: FragmentPackageListBinding
     private lateinit var adapter: PackageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,10 +24,7 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_package_list, container, false)
-
-        return binding.root
+        return inflater.inflate(R.layout.fragment_package_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +32,7 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
 
         adapter = PackageAdapter(this)
 
-        binding.packageList.adapter = adapter
+        view.findViewById<RecyclerView>(R.id.package_list).adapter = adapter
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

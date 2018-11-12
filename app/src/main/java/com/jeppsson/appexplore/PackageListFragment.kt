@@ -62,7 +62,7 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
     }
 
     override fun onChanged(packages: List<Package>) {
-        adapter.setPackageList(packages)
+        adapter.submitList(packages)
     }
 
     override fun onClick(p: String) {

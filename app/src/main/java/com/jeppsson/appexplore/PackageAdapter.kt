@@ -1,60 +1,38 @@
 package com.jeppsson.appexplore
 
-import androidx.databinding.DataBindingUtil
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.jeppsson.appexplore.databinding.PackageRowItemBinding
 import com.jeppsson.appexplore.db.Package
 
-internal class PackageAdapter(@param:Nullable @field:Nullable
-                              private val mPackageClickCallback: PackageClickCallback) : RecyclerView.Adapter<PackageAdapter.PackageViewHolder>() {
+internal class PackageAdapter(private val packageClickCallback: PackageClickCallback) :
+        ListAdapter<Package, PackageAdapter.PackageViewHolder>(TaskDiffCallback()) {
 
-    private var packageList: List<Package> = ArrayList()
-
-    @NonNull
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): PackageViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PackageViewHolder {
         val binding = DataBindingUtil.inflate<PackageRowItemBinding>(LayoutInflater.from(parent.context),
                 R.layout.package_row_item, parent, false)
-        binding.callback = mPackageClickCallback
+        binding.callback = packageClickCallback
         return PackageViewHolder(binding)
     }
 
-    override fun onBindViewHolder(@NonNull holder: PackageViewHolder, position: Int) {
-        holder.binding.pack = packageList[position]
+    override fun onBindViewHolder(holder: PackageViewHolder, position: Int) {
+        holder.binding.pack = getItem(position)
     }
 
-    override fun getItemCount(): Int {
-        return packageList.size
-    }
+    private class TaskDiffCallback : DiffUtil.ItemCallback<Package>() {
+        override fun areItemsTheSame(oldItem: Package, newItem: Package): Boolean {
+            return oldItem.packageName == newItem.packageName
+        }
 
-    fun setPackageList(apps: List<Package>) {
-        val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize(): Int {
-                return packageList.size
-            }
-
-            override fun getNewListSize(): Int {
-                return apps.size
-            }
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return packageList[oldItemPosition].packageName == apps[newItemPosition].packageName
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val newVerb = apps[newItemPosition]
-                val oldVerb = packageList[oldItemPosition]
-                return newVerb.packageName == oldVerb.packageName
-            }
-        })
-        packageList = apps
-        result.dispatchUpdatesTo(this)
-
+        override fun areContentsTheSame(oldItem: Package, newItem: Package): Boolean {
+            return oldItem.appName == newItem.appName
+                    && oldItem.minSdkVersion == newItem.minSdkVersion
+                    && oldItem.targetSdkVersion == newItem.targetSdkVersion
+        }
     }
 
     internal class PackageViewHolder(val binding: PackageRowItemBinding) : RecyclerView.ViewHolder(binding.root)

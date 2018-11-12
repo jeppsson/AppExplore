@@ -32,7 +32,7 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
 
         adapter = PackageAdapter(this)
 
-        view.findViewById<RecyclerView>(R.id.package_list).adapter = adapter
+        (view as RecyclerView).adapter = adapter
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -12,6 +12,8 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.jeppsson.appexplore.databinding.ActivityAppInfoBinding
 import com.jeppsson.appexplore.utils.*
 import java.io.File
 
@@ -19,7 +21,9 @@ class AppInfoActivity : AppCompatActivity() {
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_app_info)
+
+        val binding: ActivityAppInfoBinding =
+                DataBindingUtil.setContentView(this, R.layout.activity_app_info)
 
         val data = intent.data ?: return
 

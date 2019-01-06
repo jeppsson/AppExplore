@@ -92,11 +92,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/value_native_libraries" />
 
                 <TextView
+                    android:id="@+id/header_minimum_sdk_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minimum SDK version:"
+                    app:layout_constraintTop_toBottomOf="@+id/value_target_sdk_version" />
+
+                <TextView
                     android:id="@+id/header_meta_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Meta data:"
-                    app:layout_constraintTop_toBottomOf="@+id/value_target_sdk_version" />
+                    app:layout_constraintTop_toBottomOf="@+id/header_minimum_sdk_version" />
 
                 <TextView
                     android:id="@+id/header_certificate_start"
@@ -261,6 +268,15 @@
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_target_sdk_version"
                     tools:text="26" />
+
+                <TextView
+                    android:id="@+id/value_minimum_sdk_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/_int(applicationInfo.minSdkVersion)}"
+                    app:layout_constraintStart_toEndOf="@+id/barrier"
+                    app:layout_constraintTop_toTopOf="@+id/header_minimum_sdk_version"
+                    tools:text="1" />
 
                 <TextView
                     android:id="@+id/value_meta_data"

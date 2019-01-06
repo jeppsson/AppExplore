@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">AppExplore</string>
 
+    <string name="_int">%d</string>
+
     <string name="menu_title_app_notification_settings">Notifications</string>
 
     <string name="notification_channel_name">SDK version updates</string>

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
@@ -27,8 +26,6 @@ class AppInfoActivity : AppCompatActivity() {
 
         val data = intent.data ?: return
 
-        val targetSDKVersion = findViewById<TextView>(R.id.value_target_sdk_version)
-        val minimumSDKVersion = findViewById<TextView>(R.id.value_minimum_sdk_version)
         val metaData = findViewById<TextView>(R.id.value_meta_data)
         val sharedLibraries = findViewById<TextView>(R.id.value_shared_libraries)
         val nativeLibraries = findViewById<TextView>(R.id.value_native_libraries)
@@ -40,10 +37,6 @@ class AppInfoActivity : AppCompatActivity() {
         val permissionsNotGranted = findViewById<TextView>(R.id.value_permissions_not_granted)
         val features = findViewById<TextView>(R.id.value_features)
         val featuresNotAvailable = findViewById<TextView>(R.id.value_features_not_available)
-        val activities = findViewById<TextView>(R.id.value_activities)
-        val services = findViewById<TextView>(R.id.value_services)
-        val contentProviders = findViewById<TextView>(R.id.value_content_providers)
-        val receivers = findViewById<TextView>(R.id.value_receivers)
 
         val packageInfo: PackageInfo
         try {
@@ -80,12 +73,6 @@ class AppInfoActivity : AppCompatActivity() {
                     applicationInfo.nativeLibraryDir)
         }
 
-        // SDK versions
-        targetSDKVersion.text = applicationInfo.targetSdkVersion.toString()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            minimumSDKVersion.text = applicationInfo.minSdkVersion.toString()
-        }
-
         // Meta data
         metaData.text = Utils.metaData(applicationInfo)
 
@@ -107,12 +94,6 @@ class AppInfoActivity : AppCompatActivity() {
         // Features
         features.text = FeaturesUtils.getFeatures(packageInfo)
         featuresNotAvailable.text = FeaturesUtils.getFeaturesNoAvailable(packageManager, packageInfo)
-
-        // App components
-        activities.text = AppComponentUtils.getActivities(packageInfo)
-        services.text = AppComponentUtils.getServices(packageInfo)
-        contentProviders.text = AppComponentUtils.getContentProviders(packageInfo)
-        receivers.text = AppComponentUtils.getReceivers(packageInfo)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

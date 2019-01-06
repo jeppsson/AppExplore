@@ -27,12 +27,6 @@ class AppInfoActivity : AppCompatActivity() {
 
         val data = intent.data ?: return
 
-        val txtPackageName = findViewById<TextView>(R.id.value_package_name)
-        val versionCode = findViewById<TextView>(R.id.value_version_code)
-        val versionName = findViewById<TextView>(R.id.value_version_name)
-        val dataDir = findViewById<TextView>(R.id.value_data_directory)
-        val sourceDir = findViewById<TextView>(R.id.value_source_directory)
-        val processName = findViewById<TextView>(R.id.value_process_name)
         val targetSDKVersion = findViewById<TextView>(R.id.value_target_sdk_version)
         val minimumSDKVersion = findViewById<TextView>(R.id.value_minimum_sdk_version)
         val metaData = findViewById<TextView>(R.id.value_meta_data)
@@ -74,13 +68,8 @@ class AppInfoActivity : AppCompatActivity() {
 
         supportActionBar?.title = packageManager.getApplicationLabel(applicationInfo)
 
-        txtPackageName.text = packageInfo.packageName
-        versionCode.text = getString(R.string.app_info_version_code,
-                packageInfo.versionCode, packageInfo.versionCode)
-        versionName.text = packageInfo.versionName
-        dataDir.text = applicationInfo.dataDir
-        sourceDir.text = applicationInfo.sourceDir
-        processName.text = applicationInfo.processName
+        binding.packageInfo = packageInfo
+        binding.applicationInfo = applicationInfo
 
         // Libraries
         if (applicationInfo.sharedLibraryFiles != null) {

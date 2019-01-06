@@ -3,6 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="packageInfo"
+            type="android.content.pm.PackageInfo" />
+
+        <variable
+            name="applicationInfo"
+            type="android.content.pm.ApplicationInfo" />
+
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -182,6 +194,7 @@
                     android:id="@+id/value_package_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{packageInfo.packageName}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_package_name"
                     tools:text="com.android.chrome" />
@@ -190,6 +203,7 @@
                     android:id="@+id/value_version_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{@string/app_info_version_code(packageInfo.versionCode, packageInfo.versionCode)}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_version_code"
                     tools:text="1 (0x1)" />
@@ -198,6 +212,7 @@
                     android:id="@+id/value_version_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{packageInfo.versionName}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_version_name"
                     tools:text="1" />
@@ -206,6 +221,7 @@
                     android:id="@+id/value_data_directory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{applicationInfo.dataDir}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_data_directory"
                     tools:text="/data/user/0/..." />
@@ -214,6 +230,7 @@
                     android:id="@+id/value_source_directory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{applicationInfo.sourceDir}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_source_directory"
                     tools:text="/data/data/..." />
@@ -222,6 +239,7 @@
                     android:id="@+id/value_process_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{applicationInfo.processName}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_process_name"
                     tools:text="com.android.chrome" />

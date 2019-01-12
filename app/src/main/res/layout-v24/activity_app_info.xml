@@ -284,6 +284,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_meta_data"
+                    app:metadata="@{applicationInfo.metaData}"
                     tools:text="com.google.android.gms.version: 9452000" />
 
                 <TextView

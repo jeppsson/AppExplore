@@ -26,7 +26,6 @@ class AppInfoActivity : AppCompatActivity() {
 
         val data = intent.data ?: return
 
-        val metaData = findViewById<TextView>(R.id.value_meta_data)
         val sharedLibraries = findViewById<TextView>(R.id.value_shared_libraries)
         val nativeLibraries = findViewById<TextView>(R.id.value_native_libraries)
         val appFlags = findViewById<TextView>(R.id.value_app_flags)
@@ -69,9 +68,6 @@ class AppInfoActivity : AppCompatActivity() {
             nativeLibraries.text = Utils.arrayToLines(File(applicationInfo.nativeLibraryDir).list(),
                     applicationInfo.nativeLibraryDir)
         }
-
-        // Meta data
-        metaData.text = Utils.metaData(applicationInfo)
 
         // App flags
         appFlags.text = getString(R.string.app_info_app_flags, applicationInfo.flags,

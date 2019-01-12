@@ -312,6 +312,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_permissions"
+                    app:permissions="@{packageInfo}"
                     tools:text="android.permission.WAKE_LOCK\nandroid.permission.VIBRATE" />
 
                 <TextView
@@ -320,6 +321,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_permissions_not_granted"
+                    app:permissions_not_granted="@{packageInfo}"
                     tools:text="android.permission.WAKE_LOCK\nandroid.permission.VIBRATE" />
 
                 <TextView

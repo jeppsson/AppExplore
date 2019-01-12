@@ -29,8 +29,6 @@ class AppInfoActivity : AppCompatActivity() {
         val sharedLibraries = findViewById<TextView>(R.id.value_shared_libraries)
         val nativeLibraries = findViewById<TextView>(R.id.value_native_libraries)
         val appFlags = findViewById<TextView>(R.id.value_app_flags)
-        val permissions = findViewById<TextView>(R.id.value_permissions)
-        val permissionsNotGranted = findViewById<TextView>(R.id.value_permissions_not_granted)
         val features = findViewById<TextView>(R.id.value_features)
         val featuresNotAvailable = findViewById<TextView>(R.id.value_features_not_available)
 
@@ -72,10 +70,6 @@ class AppInfoActivity : AppCompatActivity() {
         // App flags
         appFlags.text = getString(R.string.app_info_app_flags, applicationInfo.flags,
                 AppFlagUtils.getReadableFlags(applicationInfo.flags))
-
-        // Permissions
-        permissions.text = PermissionsUtils.getPermissions(packageManager, packageInfo)
-        permissionsNotGranted.text = PermissionsUtils.getPermissionsNotGranted(packageInfo)
 
         // Features
         features.text = FeaturesUtils.getFeatures(packageInfo)

@@ -328,6 +328,7 @@
                     android:id="@+id/value_features"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:features="@{packageInfo}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_features"
                     tools:text="android.hardware.fingerprint (requires=false)" />
@@ -336,6 +337,7 @@
                     android:id="@+id/value_features_not_available"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:features_not_available="@{packageInfo}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_features_not_available"
                     tools:text="android.hardware.fingerprint (requires=false)" />

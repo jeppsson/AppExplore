@@ -311,6 +311,7 @@
                     android:id="@+id/value_app_flags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:app_flags="@{applicationInfo}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_app_flags"
                     tools:text="0x323232\nFLAG_HAS_CODE" />

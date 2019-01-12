@@ -8,12 +8,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.jeppsson.appexplore.databinding.ActivityAppInfoBinding
-import com.jeppsson.appexplore.utils.*
 
 class AppInfoActivity : AppCompatActivity() {
 
@@ -24,8 +22,6 @@ class AppInfoActivity : AppCompatActivity() {
                 DataBindingUtil.setContentView(this, R.layout.activity_app_info)
 
         val data = intent.data ?: return
-
-        val appFlags = findViewById<TextView>(R.id.value_app_flags)
 
         val packageInfo: PackageInfo
         try {
@@ -52,10 +48,6 @@ class AppInfoActivity : AppCompatActivity() {
 
         binding.packageInfo = packageInfo
         binding.applicationInfo = applicationInfo
-
-        // App flags
-        appFlags.text = getString(R.string.app_info_app_flags, applicationInfo.flags,
-                AppFlagUtils.getReadableFlags(applicationInfo.flags))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

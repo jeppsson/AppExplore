@@ -29,10 +29,7 @@ class AppInfoActivity : AppCompatActivity() {
         val metaData = findViewById<TextView>(R.id.value_meta_data)
         val sharedLibraries = findViewById<TextView>(R.id.value_shared_libraries)
         val nativeLibraries = findViewById<TextView>(R.id.value_native_libraries)
-        val certificateStart = findViewById<TextView>(R.id.value_certificate_start)
-        val certificateEnd = findViewById<TextView>(R.id.value_certificate_end)
         val appFlags = findViewById<TextView>(R.id.value_app_flags)
-        val signature = findViewById<TextView>(R.id.value_signature)
         val permissions = findViewById<TextView>(R.id.value_permissions)
         val permissionsNotGranted = findViewById<TextView>(R.id.value_permissions_not_granted)
         val features = findViewById<TextView>(R.id.value_features)
@@ -76,16 +73,9 @@ class AppInfoActivity : AppCompatActivity() {
         // Meta data
         metaData.text = Utils.metaData(applicationInfo)
 
-        // Certificate
-        certificateStart.text = CertUtils.getCertificateStart(packageInfo.signatures)
-        certificateEnd.text = CertUtils.getCertificateEnd(packageInfo.signatures)
-
         // App flags
         appFlags.text = getString(R.string.app_info_app_flags, applicationInfo.flags,
                 AppFlagUtils.getReadableFlags(applicationInfo.flags))
-
-        // Signature
-        signature.text = CertUtils.getSignature(packageInfo.signatures)
 
         // Permissions
         permissions.text = PermissionsUtils.getPermissions(packageManager, packageInfo)

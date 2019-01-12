@@ -274,6 +274,7 @@
                     android:id="@+id/value_certificate_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:certificate_start="@{packageInfo}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_certificate_start"
                     tools:text="Mon Feb 28 ..." />
@@ -282,6 +283,7 @@
                     android:id="@+id/value_certificate_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:certificate_end="@{packageInfo}"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_certificate_end"
                     tools:text="Mon Feb 28 ..." />
@@ -300,6 +302,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_signature"
+                    app:signatures="@{packageInfo}"
                     tools:text="CN=someone\nC=somewhere" />
 
                 <TextView

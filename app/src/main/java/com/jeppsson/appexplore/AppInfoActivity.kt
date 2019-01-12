@@ -68,10 +68,7 @@ class AppInfoActivity : AppCompatActivity() {
             return
         }
 
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.title = packageManager.getApplicationLabel(applicationInfo)
-        }
+        supportActionBar?.title = packageManager.getApplicationLabel(applicationInfo)
 
         txtPackageName.text = packageInfo.packageName
         versionCode.text = getString(R.string.app_info_version_code,

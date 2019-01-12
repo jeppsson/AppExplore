@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.jeppsson.appexplore.databinding.ActivityAppInfoBinding
 import com.jeppsson.appexplore.utils.*
-import java.io.File
 
 class AppInfoActivity : AppCompatActivity() {
 
@@ -26,8 +25,6 @@ class AppInfoActivity : AppCompatActivity() {
 
         val data = intent.data ?: return
 
-        val sharedLibraries = findViewById<TextView>(R.id.value_shared_libraries)
-        val nativeLibraries = findViewById<TextView>(R.id.value_native_libraries)
         val appFlags = findViewById<TextView>(R.id.value_app_flags)
 
         val packageInfo: PackageInfo
@@ -55,15 +52,6 @@ class AppInfoActivity : AppCompatActivity() {
 
         binding.packageInfo = packageInfo
         binding.applicationInfo = applicationInfo
-
-        // Libraries
-        if (applicationInfo.sharedLibraryFiles != null) {
-            sharedLibraries.text = Utils.arrayToLines(applicationInfo.sharedLibraryFiles)
-        }
-        if (applicationInfo.nativeLibraryDir != null) {
-            nativeLibraries.text = Utils.arrayToLines(File(applicationInfo.nativeLibraryDir).list(),
-                    applicationInfo.nativeLibraryDir)
-        }
 
         // App flags
         appFlags.text = getString(R.string.app_info_app_flags, applicationInfo.flags,

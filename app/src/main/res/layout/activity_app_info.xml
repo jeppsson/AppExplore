@@ -243,6 +243,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_shared_libraries"
+                    app:shared_libraries="@{applicationInfo}"
                     tools:text="No shared libraries" />
 
                 <TextView
@@ -251,6 +252,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toEndOf="@+id/barrier"
                     app:layout_constraintTop_toTopOf="@+id/header_native_libraries"
+                    app:native_libraries="@{applicationInfo}"
                     tools:text="No native libraries" />
 
                 <TextView

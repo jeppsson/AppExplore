@@ -1,4 +1,4 @@
-package com.jeppsson.appexplore
+package com.jeppsson.appexplore.databinding
 
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable

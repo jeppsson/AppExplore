@@ -1,6 +1,5 @@
 package com.jeppsson.appexplore
 
-import android.app.Application
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -11,16 +10,12 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.*
-import com.jeppsson.appexplore.db.Package
-import com.jeppsson.appexplore.db.PackageDatabase
 import com.jeppsson.appexplore.utils.*
 import java.io.File
 
-class AppInfoActivity : AppCompatActivity(), Observer<Package> {
+class AppInfoActivity : AppCompatActivity() {
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,31 +23,7 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
 
         val data = intent.data ?: return
 
-        ViewModelProviders.of(this,
-                PackageViewModel.PackageViewModelFactory(application, data.schemeSpecificPart))
-                .get(PackageViewModel::class.java)
-                .packageInfo.observe(this, this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.app_info, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_open_app_info -> {
-                startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        intent.data))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onChanged(@Nullable p: Package?) {
-        val packageName = findViewById<TextView>(R.id.value_package_name)
+        val txtPackageName = findViewById<TextView>(R.id.value_package_name)
         val versionCode = findViewById<TextView>(R.id.value_version_code)
         val versionName = findViewById<TextView>(R.id.value_version_name)
         val dataDir = findViewById<TextView>(R.id.value_data_directory)
@@ -76,15 +47,9 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
         val contentProviders = findViewById<TextView>(R.id.value_content_providers)
         val receivers = findViewById<TextView>(R.id.value_receivers)
 
-        if (p == null) {
-            // Could happen if app has been uninstalled
-            finish()
-            return
-        }
-
         val packageInfo: PackageInfo
         try {
-            packageInfo = packageManager.getPackageInfo(p.packageName,
+            packageInfo = packageManager.getPackageInfo(data.schemeSpecificPart,
                     PackageManager.GET_SIGNATURES or PackageManager.GET_PERMISSIONS
                             or PackageManager.GET_CONFIGURATIONS or PackageManager.GET_ACTIVITIES
                             or PackageManager.GET_SERVICES or PackageManager.GET_PROVIDERS
@@ -96,7 +61,7 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
 
         val applicationInfo: ApplicationInfo
         try {
-            applicationInfo = packageManager.getApplicationInfo(p.packageName,
+            applicationInfo = packageManager.getApplicationInfo(data.schemeSpecificPart,
                     PackageManager.GET_SHARED_LIBRARY_FILES or PackageManager.GET_META_DATA)
         } catch (e: PackageManager.NameNotFoundException) {
             finish()
@@ -105,10 +70,10 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
 
         val actionBar = supportActionBar
         if (actionBar != null) {
-            actionBar.title = p.appName
+            actionBar.title = packageManager.getApplicationLabel(applicationInfo)
         }
 
-        packageName.text = p.packageName
+        txtPackageName.text = packageInfo.packageName
         versionCode.text = getString(R.string.app_info_version_code,
                 packageInfo.versionCode, packageInfo.versionCode)
         versionName.text = packageInfo.versionName
@@ -160,18 +125,20 @@ class AppInfoActivity : AppCompatActivity(), Observer<Package> {
         receivers.text = AppComponentUtils.getReceivers(packageInfo)
     }
 
-    private class PackageViewModel internal constructor(application: Application, packageName: String) : AndroidViewModel(application) {
-
-        internal val packageInfo: LiveData<Package> =
-                PackageDatabase.getAppDatabase(getApplication()).dao().findAppLive(packageName)
-
-        class PackageViewModelFactory internal constructor(private val application: Application, private val packageName: String) : ViewModelProvider.NewInstanceFactory() {
-
-            @NonNull
-            override fun <T : ViewModel> create(@NonNull modelClass: Class<T>): T {
-                return PackageViewModel(application, packageName) as T
-            }
-        }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.app_info, menu)
+        return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_open_app_info -> {
+                startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        intent.data))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

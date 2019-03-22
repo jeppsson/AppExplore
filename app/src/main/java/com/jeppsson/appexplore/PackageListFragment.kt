@@ -7,15 +7,19 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
 import com.jeppsson.appexplore.db.Package
 import com.jeppsson.appexplore.db.PackageDatabase
 
-class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCallback {
+
+class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCallback,
+        SearchView.OnQueryTextListener {
 
     private lateinit var adapter: PackageAdapter
+    private lateinit var viewModel: PackageListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +42,20 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        ViewModelProviders.of(this).get(PackageListViewModel::class.java)
-                .packages.observe(this, this)
+        viewModel = ViewModelProviders.of(this).get(PackageListViewModel::class.java)
+        viewModel.packages.observe(this, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
         inflater.inflate(R.menu.package_list, menu)
+
+        val searchMenuItem = menu.findItem(R.id.menu_action_search)
+        val searchView = searchMenuItem.actionView as SearchView
+        searchView.setOnQueryTextListener(this)
+        searchView.setIconifiedByDefault(false)
+        searchView.queryHint = getString(R.string.search_hint)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -74,9 +84,31 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
                 .setData(uri))
     }
 
+    override fun onQueryTextChange(newText: String?): Boolean {
+        viewModel.updateQuery(newText)
+        return true
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
+
     class PackageListViewModel(application: Application) : AndroidViewModel(application) {
 
+        private val searchQuery = MutableLiveData<String>()
+
         internal val packages: LiveData<List<Package>> =
-                PackageDatabase.getAppDatabase(getApplication()).dao().loadAllApps()
+                Transformations.switchMap(searchQuery) { query ->
+                    PackageDatabase.getAppDatabase(getApplication()).dao()
+                            .findAppsLive("%$query%")
+                }
+
+        fun updateQuery(query: String?) {
+            searchQuery.value = query
+        }
+
+        init {
+            searchQuery.value = ""
+        }
     }
 }

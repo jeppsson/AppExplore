@@ -25,9 +25,9 @@ interface PackageDao {
     @Query("SELECT * FROM packages ORDER BY appName ASC")
     fun allApps(): List<Package>
 
+    @Query("SELECT * FROM packages WHERE packageName LIKE :p OR appName LIKE :p")
+    fun findAppsLive(p: String): LiveData<List<Package>>
+
     @Query("SELECT * FROM packages WHERE packageName LIKE :p LIMIT 1")
     fun findAppLive(p: String): LiveData<Package>
-
-    @Query("SELECT * FROM packages ORDER BY appName ASC")
-    fun loadAllApps(): LiveData<List<Package>>
 }

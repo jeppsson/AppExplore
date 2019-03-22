@@ -4,6 +4,9 @@
     <string name="_int">%d</string>
 
     <string name="menu_title_app_notification_settings">Notifications</string>
+    <string name="menu_title_search">Search</string>
+
+    <string name="search_hint">App or package name</string>
 
     <string name="notification_channel_name">SDK version updates</string>
     <string name="notification_channel_description">Notifies when an app as been updated with new targetSdkVersion or minSdkVersion.</string>

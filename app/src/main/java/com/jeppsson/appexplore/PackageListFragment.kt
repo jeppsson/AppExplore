@@ -66,14 +66,12 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
     }
 
     override fun onClick(p: String) {
-        if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-            val uri = Uri.Builder()
-                    .scheme("package")
-                    .opaquePart(p)
-                    .build()
-            startActivity(Intent(context, AppInfoActivity::class.java)
-                    .setData(uri))
-        }
+        val uri = Uri.Builder()
+                .scheme("package")
+                .opaquePart(p)
+                .build()
+        startActivity(Intent(context, AppInfoActivity::class.java)
+                .setData(uri))
     }
 
     class PackageListViewModel(application: Application) : AndroidViewModel(application) {

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jeppsson.appexplore.db.Package
 import com.jeppsson.appexplore.db.PackageDatabase
 
-
 class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCallback,
         SearchView.OnQueryTextListener {
 
@@ -56,6 +55,7 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
         searchView.setOnQueryTextListener(this)
         searchView.setIconifiedByDefault(false)
         searchView.queryHint = getString(R.string.search_hint)
+        searchView.isIconified = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

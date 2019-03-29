@@ -33,13 +33,16 @@
                     android:id="@+id/header_package_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Package name:" />
+                    android:text="Package name:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/header_version_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Version code:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_package_name" />
 
                 <TextView
@@ -47,6 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Version name:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_version_code" />
 
                 <TextView
@@ -54,6 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Data directory:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_version_name" />
 
                 <TextView
@@ -61,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Source directory:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_data_directory" />
 
                 <TextView
@@ -68,6 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Process name:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_source_directory" />
 
                 <TextView
@@ -75,6 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Shared libraries:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_process_name" />
 
                 <TextView
@@ -82,6 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Native libraries:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_shared_libraries" />
 
                 <TextView
@@ -89,6 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Target SDK version:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_native_libraries" />
 
                 <TextView
@@ -96,6 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Minimum SDK version:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_target_sdk_version" />
 
                 <TextView
@@ -103,6 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Meta data:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_minimum_sdk_version" />
 
                 <TextView
@@ -110,6 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Certificate start:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_meta_data" />
 
                 <TextView
@@ -117,6 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Certificate end:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_certificate_start" />
 
                 <TextView
@@ -124,6 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="App flags:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_certificate_end" />
 
                 <TextView
@@ -131,6 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Signature:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_app_flags" />
 
                 <TextView
@@ -138,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Permissions:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_signature" />
 
                 <TextView
@@ -145,6 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Not Granted Permissions:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_permissions" />
 
                 <TextView
@@ -152,6 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Required features:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_permissions_not_granted" />
 
                 <TextView
@@ -159,6 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Features not available in Device:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_features" />
 
                 <TextView
@@ -166,6 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Activities:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_features_not_available" />
 
                 <TextView
@@ -173,6 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Services:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_activities" />
 
                 <TextView
@@ -180,6 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Content Providers:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_services" />
 
                 <TextView
@@ -187,6 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Broadcast Receivers:"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/value_content_providers" />
 
                 <!-- values from here -->

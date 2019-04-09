@@ -1,6 +1,5 @@
 package com.jeppsson.appexplore
 
-import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -9,13 +8,13 @@ import android.provider.Settings
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.jeppsson.appexplore.db.Package
-import com.jeppsson.appexplore.db.PackageDatabase
 
 class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCallback,
-        SearchView.OnQueryTextListener {
+    SearchView.OnQueryTextListener {
 
     private lateinit var adapter: PackageAdapter
     private lateinit var viewModel: PackageListViewModel
@@ -26,7 +25,11 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_package_list, container, false)
     }
 
@@ -41,7 +44,7 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(PackageListViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(PackageListViewModel::class.java)
         viewModel.packages.observe(this, this)
     }
 
@@ -62,9 +65,17 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
         return when (item.itemId) {
             R.id.menu_action_app_notification_settings -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                            .putExtra(Settings.EXTRA_APP_PACKAGE, context?.packageName))
+                    startActivity(
+                        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                            .putExtra(Settings.EXTRA_APP_PACKAGE, context?.packageName)
+                    )
                 }
+                true
+            }
+            R.id.menu_action_filter -> {
+                fragmentManager?.beginTransaction()
+                    ?.add(FilterDialogFragment(), "filter_dialog")
+                    ?.commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -77,38 +88,21 @@ class PackageListFragment : Fragment(), Observer<List<Package>>, PackageClickCal
 
     override fun onClick(p: String) {
         val uri = Uri.Builder()
-                .scheme("package")
-                .opaquePart(p)
-                .build()
-        startActivity(Intent(context, AppInfoActivity::class.java)
-                .setData(uri))
+            .scheme("package")
+            .opaquePart(p)
+            .build()
+        startActivity(
+            Intent(context, AppInfoActivity::class.java)
+                .setData(uri)
+        )
     }
 
-    override fun onQueryTextChange(newText: String?): Boolean {
+    override fun onQueryTextChange(newText: String): Boolean {
         viewModel.updateQuery(newText)
         return true
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         return true
-    }
-
-    class PackageListViewModel(application: Application) : AndroidViewModel(application) {
-
-        private val searchQuery = MutableLiveData<String>()
-
-        internal val packages: LiveData<List<Package>> =
-                Transformations.switchMap(searchQuery) { query ->
-                    PackageDatabase.getAppDatabase(getApplication()).dao()
-                            .findAppsLive("%$query%")
-                }
-
-        fun updateQuery(query: String?) {
-            searchQuery.value = query
-        }
-
-        init {
-            searchQuery.value = ""
-        }
     }
 }

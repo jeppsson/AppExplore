@@ -10,6 +10,11 @@
         app:showAsAction="collapseActionView|always"
         tools:ignore="AlwaysShowAction" />
     <item
+        android:id="@+id/menu_action_filter"
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:title="@string/menu_title_filter"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_action_app_notification_settings"
         android:title="@string/menu_title_app_notification_settings"
         app:showAsAction="never" />

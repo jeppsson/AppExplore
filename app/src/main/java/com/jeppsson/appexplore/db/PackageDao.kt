@@ -25,8 +25,19 @@ interface PackageDao {
     @Query("SELECT * FROM packages ORDER BY appName ASC")
     fun allApps(): List<Package>
 
-    @Query("SELECT * FROM packages WHERE packageName LIKE :p OR appName LIKE :p ORDER BY appName ASC")
+    @Query("SELECT * FROM packages WHERE (packageName LIKE :p OR appName LIKE :p) ORDER BY appName ASC")
     fun findAppsLive(p: String): LiveData<List<Package>>
+
+    @Query(
+        "SELECT * FROM packages WHERE (packageName LIKE :p OR appName LIKE :p)" +
+                " AND targetSdkVersion >= :targetSdkVersionMin AND targetSdkVersion <= :targetSdkVersionMax" +
+                " ORDER BY appName ASC"
+    )
+    fun findAppsSdkLive(
+        p: String,
+        targetSdkVersionMin: Int,
+        targetSdkVersionMax: Int
+    ): LiveData<List<Package>>
 
     @Query("SELECT * FROM packages WHERE packageName LIKE :p LIMIT 1")
     fun findAppLive(p: String): LiveData<Package>

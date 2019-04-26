@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
 
-@Database(entities = [Package::class], version = 1)
+@Database(entities = [Package::class], version = 2)
 abstract class PackageDatabase : RoomDatabase() {
 
     abstract fun dao(): PackageDao
@@ -20,9 +20,12 @@ abstract class PackageDatabase : RoomDatabase() {
                 return instance
             }
 
-            val newInstance = Room.databaseBuilder(context.applicationContext,
-                    PackageDatabase::class.java, "package-db")
-                    .build()
+            val newInstance = Room.databaseBuilder(
+                context.applicationContext,
+                PackageDatabase::class.java, "package-db"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
             INSTANCE = newInstance
 
             return newInstance

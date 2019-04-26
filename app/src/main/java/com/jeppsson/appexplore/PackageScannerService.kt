@@ -42,8 +42,7 @@ class PackageScannerService : JobIntentService() {
         } else if (Intent.ACTION_PACKAGE_FULLY_REMOVED == action) {
             val data = intent.data
             if (data != null) {
-                val p = Package()
-                p.packageName = data.schemeSpecificPart
+                val p = Package(packageName = data.schemeSpecificPart)
                 dao.delete(p)
             }
         } else {
@@ -88,14 +87,17 @@ class PackageScannerService : JobIntentService() {
         }
     }
 
-    private fun updatePackage(dao: PackageDao, pm: PackageManager, applicationInfo: ApplicationInfo) {
-        val p = Package()
-        p.appName = pm.getApplicationLabel(applicationInfo).toString()
-        p.packageName = applicationInfo.packageName
-        p.targetSdkVersion = applicationInfo.targetSdkVersion
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            p.minSdkVersion = applicationInfo.minSdkVersion
-        }
+    private fun updatePackage(
+        dao: PackageDao,
+        pm: PackageManager,
+        applicationInfo: ApplicationInfo
+    ) {
+        val p = Package(
+            packageName = applicationInfo.packageName,
+            appName = pm.getApplicationLabel(applicationInfo).toString(),
+            targetSdkVersion = applicationInfo.targetSdkVersion,
+            minSdkVersion = if (Build.VERSION.SDK_INT >= 24) applicationInfo.minSdkVersion else 0
+        )
 
         val updates = dao.update(p)
         if (updates == 0) {

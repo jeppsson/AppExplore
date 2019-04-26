@@ -5,19 +5,10 @@ import androidx.room.PrimaryKey
 import androidx.annotation.NonNull
 
 @Entity(tableName = "packages")
-class Package {
-
+data class Package(
     @PrimaryKey
-    @NonNull
-    var packageName: String? = null
-
-    var appName: String? = null
-
-    var minSdkVersion: Int = 0
-
-    var targetSdkVersion: Int = 0
-
-    override fun toString(): String {
-        return Package::class.java.simpleName + " packageName: " + packageName
-    }
-}
+    val packageName: String,
+    val appName: String = "",
+    val minSdkVersion: Int = 0,
+    val targetSdkVersion: Int = 0
+)

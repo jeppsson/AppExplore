@@ -10,5 +10,6 @@ data class Package(
     val packageName: String,
     val appName: String = "",
     val minSdkVersion: Int = 0,
-    val targetSdkVersion: Int = 0
+    val targetSdkVersion: Int = 0,
+    val flags: Int = 0
 )

@@ -96,7 +96,8 @@ class PackageScannerService : JobIntentService() {
             packageName = applicationInfo.packageName,
             appName = pm.getApplicationLabel(applicationInfo).toString(),
             targetSdkVersion = applicationInfo.targetSdkVersion,
-            minSdkVersion = if (Build.VERSION.SDK_INT >= 24) applicationInfo.minSdkVersion else 0
+            minSdkVersion = if (Build.VERSION.SDK_INT >= 24) applicationInfo.minSdkVersion else 0,
+            flags = applicationInfo.flags
         )
 
         val updates = dao.update(p)

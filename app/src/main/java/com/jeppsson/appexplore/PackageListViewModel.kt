@@ -3,24 +3,44 @@ package com.jeppsson.appexplore
 import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.jeppsson.appexplore.db.Package
 import com.jeppsson.appexplore.db.PackageDatabase
 
 class PackageListViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val filterMutable =
-        MutableLiveData<PackageFilter>()
-    internal val filter: LiveData<PackageFilter> = filterMutable
+    private val defaultTargetSdkVersionMin: Int =
+        application.getString(R.string.filter_sdk_version_min).toInt()
+    private val defaultTargetSdkVersionMax: Int =
+        application.getString(R.string.filter_sdk_version_max).toInt()
+
+    private val filter: MediatorLiveData<PackageFilter> = MediatorLiveData()
+
+    var searchQuery: MutableLiveData<String> = MutableLiveData()
+    var targetSdkVersionMin: MutableLiveData<String> = MutableLiveData()
+    var targetSdkVersionMax: MutableLiveData<String> = MutableLiveData()
+    var debuggable: MutableLiveData<Boolean> = MutableLiveData()
+    var usesClearTextTraffic: MutableLiveData<Boolean> = MutableLiveData()
+
+    init {
+        searchQuery.value = ""
+        targetSdkVersionMin.value = defaultTargetSdkVersionMin.toString()
+        targetSdkVersionMax.value = defaultTargetSdkVersionMax.toString()
+        debuggable.value = false
+        usesClearTextTraffic.value = false
+
+        filter.addSource(searchQuery) { updateFilter() }
+        filter.addSource(targetSdkVersionMin) { updateFilter() }
+        filter.addSource(targetSdkVersionMax) { updateFilter() }
+        filter.addSource(debuggable) { updateFilter() }
+        filter.addSource(usesClearTextTraffic) { updateFilter() }
+    }
 
     internal val packages: LiveData<List<Package>> =
         Transformations.switchMap(filter) { filter ->
-            if (filter.targetSdkVersionMin != 1 || filter.targetSdkVersionMax != 29
-                || filter.flags != 0
+            if (filter.targetSdkVersionMin != defaultTargetSdkVersionMin ||
+                filter.targetSdkVersionMax != defaultTargetSdkVersionMax ||
+                filter.flags != 0
             ) {
                 PackageDatabase.getAppDatabase(getApplication())
                     .dao()
@@ -38,96 +58,37 @@ class PackageListViewModel(application: Application) : AndroidViewModel(applicat
         }
 
     fun updateQuery(query: String) {
-        val packageFilter = filter.value ?: PackageFilter(
-            "",
-            1,
-            29,
-            0
-        )
-        filterMutable.postValue(
-            PackageFilter(
-                query,
-                packageFilter.targetSdkVersionMin,
-                packageFilter.targetSdkVersionMax,
-                packageFilter.flags
-            )
-        )
-    }
-
-    fun updateSdkFilter(
-        targetSdkVersionMin: Int,
-        targetSdkVersionMax: Int
-    ) {
-        val packageFilter = filter.value ?: PackageFilter(
-            "",
-            1,
-            29,
-            0
-        )
-        filterMutable.postValue(
-            PackageFilter(
-                packageFilter.query,
-                targetSdkVersionMin,
-                targetSdkVersionMax,
-                packageFilter.flags
-            )
-        )
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun updateFlagClearText(checked: Boolean) {
-        val packageFilter = filter.value ?: PackageFilter(
-            "",
-            1,
-            29,
-            0
-        )
-        val flags = if (checked) {
-            packageFilter.flags or ApplicationInfo.FLAG_USES_CLEARTEXT_TRAFFIC
-        } else {
-            packageFilter.flags and ApplicationInfo.FLAG_USES_CLEARTEXT_TRAFFIC.inv()
-        }
-        filterMutable.postValue(
-            PackageFilter(
-                packageFilter.query,
-                packageFilter.targetSdkVersionMin,
-                packageFilter.targetSdkVersionMax,
-                flags
-            )
-        )
-    }
-
-    fun updateFlagDebuggable(checked: Boolean) {
-        val packageFilter = filter.value ?: PackageFilter(
-            "",
-            1,
-            29,
-            0
-        )
-        val flags = if (checked) {
-            packageFilter.flags or ApplicationInfo.FLAG_DEBUGGABLE
-        } else {
-            packageFilter.flags and ApplicationInfo.FLAG_DEBUGGABLE.inv()
-        }
-        filterMutable.postValue(
-            PackageFilter(
-                packageFilter.query,
-                packageFilter.targetSdkVersionMin,
-                packageFilter.targetSdkVersionMax,
-                flags
-            )
-        )
+        searchQuery.postValue(query)
     }
 
     fun clearFilter() {
-        filterMutable.postValue(PackageFilter("", 1, 29, 0))
+        targetSdkVersionMin.value = defaultTargetSdkVersionMin.toString()
+        targetSdkVersionMax.value = defaultTargetSdkVersionMax.toString()
+        debuggable.value = false
+        usesClearTextTraffic.value = false
     }
 
-    init {
-        filterMutable.value = PackageFilter("", 1, 29, 0)
+    private fun updateFilter() {
+        var flags = if (debuggable.value == true) {
+            ApplicationInfo.FLAG_DEBUGGABLE
+        } else {
+            0
+        }
+        flags = if (usesClearTextTraffic.value == true && Build.VERSION.SDK_INT >= 23) {
+            flags or ApplicationInfo.FLAG_USES_CLEARTEXT_TRAFFIC
+        } else {
+            flags
+        }
+
+        filter.value = PackageFilter(
+            searchQuery.value ?: "",
+            targetSdkVersionMin.value?.toIntOrNull() ?: defaultTargetSdkVersionMin,
+            targetSdkVersionMax.value?.toIntOrNull() ?: defaultTargetSdkVersionMax,
+            flags
+        )
     }
 
-    internal data class PackageFilter(
+    private data class PackageFilter(
         val query: String,
         val targetSdkVersionMin: Int,
         val targetSdkVersionMax: Int,

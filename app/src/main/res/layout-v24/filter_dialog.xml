@@ -52,6 +52,12 @@
             android:checked="@={viewmodel.debuggable}"
             android:text="@string/flag_debuggable" />
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@={viewmodel.usesClearTextTraffic}"
+            android:text="@string/flag_uses_cleartext_traffic" />
+
     </LinearLayout>
 
 </layout>

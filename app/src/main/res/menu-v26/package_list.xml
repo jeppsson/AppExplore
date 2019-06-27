@@ -7,12 +7,14 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/menu_title_search"
         app:actionViewClass="android.widget.SearchView"
+        app:iconTint="?android:attr/actionMenuTextColor"
         app:showAsAction="collapseActionView|always"
         tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/menu_action_filter"
         android:icon="@drawable/ic_filter_list_white_24dp"
         android:title="@string/menu_title_filter"
+        app:iconTint="?android:attr/actionMenuTextColor"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_action_app_notification_settings"

@@ -105,7 +105,7 @@ private fun colorize(context: Context, text: String): SpannableString {
     var m = Pattern.compile("\\b(?:dangerous)\\b").matcher(text)
     while (m.find()) {
         content.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(context, R.color.cyan)),
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.red)),
             m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
@@ -113,7 +113,7 @@ private fun colorize(context: Context, text: String): SpannableString {
     m = Pattern.compile("\\b(?:signature)\\b").matcher(text)
     while (m.find()) {
         content.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(context, R.color.yellow)),
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.blue)),
             m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
@@ -121,7 +121,7 @@ private fun colorize(context: Context, text: String): SpannableString {
     m = Pattern.compile("\\b(?:signatureOrSystem)\\b").matcher(text)
     while (m.find()) {
         content.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(context, R.color.red)),
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.orange)),
             m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }

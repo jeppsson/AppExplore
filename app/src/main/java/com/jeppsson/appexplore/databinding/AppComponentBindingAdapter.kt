@@ -116,7 +116,7 @@ private fun colorize(context: Context, text: String): SpannableString {
     val m = Pattern.compile("\\b(?:exported)\\b").matcher(text)
     while (m.find()) {
         content.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(context, R.color.yellow)),
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.blue)),
             m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }

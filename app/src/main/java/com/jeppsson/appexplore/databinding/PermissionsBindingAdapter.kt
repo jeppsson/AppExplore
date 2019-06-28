@@ -1,14 +1,16 @@
 package com.jeppsson.appexplore.databinding
 
+import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PermissionInfo
-import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.jeppsson.appexplore.R
 import java.util.regex.Pattern
 
 @BindingAdapter("permissions")
@@ -21,21 +23,23 @@ fun getPermissions(view: TextView, packageInfo: PackageInfo) {
         for (permissionName in packageInfo.requestedPermissions) {
             val permissionInfo: PermissionInfo
             try {
-                permissionInfo = view.context.packageManager.getPermissionInfo(permissionName,
-                        PackageManager.GET_META_DATA)
+                permissionInfo = view.context.packageManager.getPermissionInfo(
+                    permissionName,
+                    PackageManager.GET_META_DATA
+                )
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
                 continue
             }
 
             sb.append(permissionInfo.name)
-                    .append(" (")
-                    .append(protectionToString(permissionInfo.protectionLevel))
-                    .append(")\n")
+                .append(" (")
+                .append(protectionToString(permissionInfo.protectionLevel))
+                .append(")\n")
         }
     }
 
-    view.text = colorize(sb.toString().trim())
+    view.text = colorize(view.context, sb.toString().trim())
 }
 
 @BindingAdapter("permissions_not_granted")
@@ -50,7 +54,7 @@ fun getPermissionsNotGranted(view: TextView, packageInfo: PackageInfo) {
         }
     }
 
-    view.text = colorize(sb.toString().trim())
+    view.text = colorize(view.context, sb.toString().trim())
 }
 
 
@@ -95,25 +99,31 @@ private fun protectionToString(level: Int): String {
     return protLevel
 }
 
-private fun colorize(text: String): SpannableString {
+private fun colorize(context: Context, text: String): SpannableString {
     val content = SpannableString(text)
 
     var m = Pattern.compile("\\b(?:dangerous)\\b").matcher(text)
     while (m.find()) {
-        content.setSpan(ForegroundColorSpan(Color.CYAN),
-                m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        content.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.cyan)),
+            m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
 
     m = Pattern.compile("\\b(?:signature)\\b").matcher(text)
     while (m.find()) {
-        content.setSpan(ForegroundColorSpan(Color.YELLOW),
-                m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        content.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.yellow)),
+            m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
 
     m = Pattern.compile("\\b(?:signatureOrSystem)\\b").matcher(text)
     while (m.find()) {
-        content.setSpan(ForegroundColorSpan(Color.RED),
-                m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        content.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.red)),
+            m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
 
     return content

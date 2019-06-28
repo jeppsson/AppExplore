@@ -1,12 +1,14 @@
 package com.jeppsson.appexplore.databinding
 
+import android.content.Context
 import android.content.pm.PackageInfo
-import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.jeppsson.appexplore.R
 import java.util.regex.Pattern
 
 private const val LAUNCH_MULTIPLE = 0
@@ -27,9 +29,9 @@ fun getActivities(view: TextView, packageInfo: PackageInfo) {
             }
             if (activityInfo.launchMode != LAUNCH_MULTIPLE) {
                 info.append('(')
-                        .append(launchMode(activityInfo.launchMode))
-                        .append(')')
-                        .append(' ')
+                    .append(launchMode(activityInfo.launchMode))
+                    .append(')')
+                    .append(' ')
             }
             if (info.isNotEmpty()) {
                 info.append('\n')
@@ -40,7 +42,7 @@ fun getActivities(view: TextView, packageInfo: PackageInfo) {
         sb.append("No activities")
     }
 
-    view.text = colorize(sb.toString().trim())
+    view.text = colorize(view.context, sb.toString().trim())
 }
 
 @BindingAdapter("services")
@@ -58,7 +60,7 @@ fun getServices(view: TextView, packageInfo: PackageInfo) {
         sb.append("No services")
     }
 
-    view.text = colorize(sb.toString().trim())
+    view.text = colorize(view.context, sb.toString().trim())
 }
 
 @BindingAdapter("providers")
@@ -76,7 +78,7 @@ fun getContentProviders(view: TextView, packageInfo: PackageInfo) {
         sb.append("No content providers")
     }
 
-    view.text = colorize(sb.toString().trim())
+    view.text = colorize(view.context, sb.toString().trim())
 }
 
 @BindingAdapter("receivers")
@@ -94,7 +96,7 @@ fun getReceivers(view: TextView, packageInfo: PackageInfo) {
         sb.append("No receivers")
     }
 
-    view.text = colorize(sb.toString().trim())
+    view.text = colorize(view.context, sb.toString().trim())
 }
 
 
@@ -108,13 +110,15 @@ private fun launchMode(launchMode: Int): String {
     }
 }
 
-private fun colorize(text: String): SpannableString {
+private fun colorize(context: Context, text: String): SpannableString {
     val content = SpannableString(text)
 
     val m = Pattern.compile("\\b(?:exported)\\b").matcher(text)
     while (m.find()) {
-        content.setSpan(ForegroundColorSpan(Color.YELLOW),
-                m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        content.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(context, R.color.yellow)),
+            m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
 
     return content

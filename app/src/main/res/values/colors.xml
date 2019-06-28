@@ -3,4 +3,8 @@
 
     <color name="ic_launcher_background">#FFFFFF</color>
 
+    <color name="cyan">#00FFFF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="red">#ff0000</color>
+
 </resources>

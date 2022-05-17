@@ -115,7 +115,8 @@ class PackageScannerService : JobIntentService() {
                 .setData(uri)
         val pendingIntent = TaskStackBuilder.create(this)
                 .addNextIntentWithParentStack(appInfoIntent)
-                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                .getPendingIntent(0,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val notificationBuilder =
                 NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
